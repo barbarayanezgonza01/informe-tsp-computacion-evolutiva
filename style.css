@@ -1,0 +1,644 @@
+:root {
+  --bg-dark: #003b73;
+  --bg-light: #edf2f7;
+  --text-light: #f8fbff;
+  --text-dark: #16324f;
+  --accent: #00a6b4;
+}
+
+/* ================= TIPOGRAFÍA GENERAL ================= */
+
+.reveal {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================= FONDOS GENERALES ================= */
+
+
+/* Sin padding alrededor de las slides (evita franjas internas) */
+.reveal .slides {
+  padding: 0 !important;
+}
+
+/* Cada slide por defecto: sin fondo propio, texto oscuro */
+.reveal section {
+  background-color: transparent;
+  color: var(--text-dark);
+}
+
+/* Slide clarita (gris azulado) */
+.reveal section.light-slide {
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+/* Slide totalmente blanca (si quieres marcarla explícitamente) */
+.reveal section.white-slide {
+  background-color: #ffffff !important;
+  color: var(--text-dark) !important;
+}
+
+/* Slide de pregunta totalmente azul (sin franjas dentro del slide) */
+.reveal section.blue-slide {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  padding: 0 !important;
+  min-height: 100%;
+}
+
+/* ================= TÍTULOS ================= */
+
+/* Mantener tamaño, peso, centrado y espaciado que ya tenías */
+.reveal h2 {
+  font-size: 3rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.reveal h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ================= COLORES DE TÍTULOS ================= */
+
+/* Por defecto: títulos en azul portada 
+   (solo cuando NO sea slide azul ni slide de portada) */
+.reveal section:not(.blue-slide):not(.title-slide) h2,
+.reveal section:not(.blue-slide):not(.title-slide) h3 {
+  color: #003b73;
+  /* azul portada */
+}
+
+/* En slides azules: texto blanco */
+.reveal section.blue-slide h2,
+.reveal section.blue-slide h3 {
+  color: var(--text-light) !important;
+}
+
+/* En la portada también deben ir blancos */
+.reveal section.title-slide h2,
+.reveal section.title-slide h3 {
+  color: var(--text-light) !important;
+}
+
+/* Texto general */
+.reveal p,
+.reveal li {
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.reveal ul {
+  margin-left: 1.4rem;
+}
+
+/* ================= COLUMNAS ================= */
+
+/* Texto columna izquierda (casos donde uses .columns) */
+.columns .column:first-child {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  line-height: 1.45;
+}
+
+/* En slides azules / oscuras, texto claro */
+.blue-slide .columns .column:first-child {
+  color: var(--text-light);
+}
+
+section.light-slide .columns .column:first-child,
+.white-slide .columns .column:first-child {
+  color: var(--text-dark);
+}
+
+/* Tabla en columna derecha */
+.columns .column:nth-child(2) table {
+  font-size: 0.85rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.columns .column:nth-child(2) th,
+.columns .column:nth-child(2) td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+section.light-slide .columns .column:nth-child(2) th,
+section.light-slide .columns .column:nth-child(2) td,
+.white-slide .columns .column:nth-child(2) th,
+.white-slide .columns .column:nth-child(2) td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.columns .column:nth-child(2) th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-light);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+section.light-slide .columns .column:nth-child(2) th,
+.white-slide .columns .column:nth-child(2) th {
+  color: var(--text-dark);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* ================= ENLACES & BOTONES ================= */
+
+.reveal a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.reveal a:hover {
+  text-decoration: underline;
+}
+
+/* Botones (ej. Pyodide) */
+.reveal button {
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+section.light-slide button,
+.white-slide button {
+  border-color: var(--bg-dark);
+  color: var(--bg-dark);
+}
+
+.reveal button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+section.light-slide button:hover,
+.white-slide button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* ================= CIRCULITOS DE PORTADA ================= */
+
+.corner-circles {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 1.6rem;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0.8;
+}
+
+.corner-circles span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+section.light-slide .corner-circles span,
+.white-slide .corner-circles span {
+  border-color: var(--bg-dark);
+}
+
+/* ================= PORTADA TIPO PPT ================= */
+
+/* Slide de título azul y sin padding interno */
+.reveal section.title-slide {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light);
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+
+/* El layout interno se estira a todo el alto de la slide */
+.reveal section.title-slide .title-slide-layout {
+  height: 100%;
+}
+
+.title-slide-layout {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 100%;
+
+  /* 👇 ESTO ES LO QUE FALTABA */
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}
+
+
+.title-slide-left {
+  flex: 0 0 55%;
+  background-color: var(--bg-dark);
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--text-light);
+}
+
+.title-slide-logo img {
+  height: 48px;
+}
+
+.title-slide-main h2 {
+  font-size: 2.6rem;
+  margin-top: 0.8rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.title-slide-ministerio {
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.title-slide-authors ul {
+  list-style: disc;
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+}
+
+/* Evitar que la imagen de la derecha se salga del contenedor */
+.title-slide-right {
+  overflow: hidden !important;
+
+  /* alinear verticalmente la imagen al centro */
+  display: flex;
+  align-items: center;
+  /* centra verticalmente */
+  justify-content: center;
+  /* centra horizontalmente (por si acaso) */
+}
+
+.title-slide-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+}
+
+
+/* ================= SLIDE INTRO + TABLA ================= */
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+/* Caja de tabla */
+.intro-table-box {
+  background: #ffffff;
+  border: 1px solid #d8dde6;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  overflow-y: auto;
+  max-height: 450px;
+}
+
+.intro-table-box table {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+}
+
+.intro-table-box th {
+  background: #eef2f7;
+  color: #16324f;
+  text-align: left;
+  font-weight: 700;
+  padding: 6px;
+  border-bottom: 1px solid #d0d7df;
+}
+
+.intro-table-box td {
+  padding: 5px;
+  border-bottom: 1px solid #e2e6ea;
+}
+
+/* ================= METODOLOGÍA: ESQUEMA ================= */
+
+.pipeline-box {
+  margin: 2rem auto 0;
+  max-width: 70%;
+  border: 1px solid #d8dde6;
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.pipeline-box h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.pipeline-box p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* === SLIDE AZUL PARA PREGUNTAS === */
+.reveal section.blue-slide {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  padding: 0 !important;
+
+  display: flex;
+  justify-content: center;
+  /* centra horizontal */
+  align-items: center;
+  /* centra vertical */
+}
+
+/* Contenedor de la pregunta (la franja azul) */
+.reveal section.blue-slide .question-slide {
+  width: 80%;
+  min-height: 40vh;
+  /* alto de la franja */
+
+  background-color: var(--bg-dark);
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 3rem;
+}
+
+/* Texto de la pregunta */
+.reveal section.blue-slide .question-slide h2 {
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1.3;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ================= VISUALIZACIONES (GRÁFICOS) ================= */
+
+.viz-container {
+  max-width: 100%;
+  margin: 0 auto 1.5rem;
+}
+
+.viz-notes {
+  max-width: 80%;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Centrar salidas de Quarto (plotly) */
+.viz-container .cell-output-display {
+  display: flex;
+  justify-content: center;
+}
+
+/* Divs de Plotly centrados */
+.viz-container .plotly,
+.viz-container .js-plotly-plot {
+  margin: 0 auto;
+}
+
+/* ================= NÚMERO DE SLIDE ================= */
+
+.reveal .slide-number {
+  color: var(--text-light);
+}
+
+/* Slides claras/blancas → número azul oscuro */
+.reveal .has-light-background .slide-number,
+.white-slide .slide-number {
+  color: var(--bg-dark) !important;
+}
+
+/* Quitar la "tarjeta" con sombra del tema simple */
+.reveal .slides section {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ==== FONDO AZUL COMPLETO SOLO CUANDO LA SLIDE ACTUAL ES OSCURA (PORTADA) ==== */
+/* RevealJS agrega la clase has-dark-background al <html> cuando la slide tiene background oscuro */
+
+html.has-dark-background .reveal-viewport,
+html.has-dark-background .reveal,
+html.has-dark-background .reveal .slides {
+  background-color: var(--bg-dark) !important;
+}
+
+/* Forzar que las slides especiales llenen todo el alto del viewport */
+.reveal .slides section.title-slide,
+.reveal .slides section.blue-slide {
+  width: 100% !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+/* Que las slides especiales llenen todo el alto del viewport */
+.reveal .slides section.title-slide,
+.reveal .slides section.blue-slide {
+  width: 100% !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* En las slides azules, esconder el h2 vacío que genera Quarto */
+.reveal section.blue-slide>h2 {
+  display: none !important;
+}
+
+/* Forzar centrado absoluto del bloque de pregunta */
+.reveal section.blue-slide {
+  display: flex !important;
+  align-items: center !important;
+  /* centro vertical */
+  justify-content: center !important;
+  /* centro horizontal */
+}
+
+/* El contenedor de la pregunta ocupa todo y centra el texto */
+.reveal section.blue-slide .question-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  padding: 0 8%;
+  background-color: var(--bg-dark);
+}
+
+/* Texto de la pregunta: grande, blanco y sin margen raro */
+.reveal section.blue-slide .question-slide h2 {
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* Que las slides especiales llenen todo el alto del viewport */
+.reveal .slides section.title-slide,
+.reveal .slides section.blue-slide {
+  width: 100% !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* En las slides azules, esconder el h2 vacío que genera Quarto */
+.reveal section.blue-slide>h2 {
+  display: none !important;
+}
+
+/* Forzar centrado absoluto del bloque de pregunta */
+.reveal section.blue-slide {
+  display: flex !important;
+  align-items: center !important;
+  /* centro vertical */
+  justify-content: center !important;
+  /* centro horizontal */
+}
+
+/* El contenedor de la pregunta ocupa todo y centra el texto */
+.reveal section.blue-slide .question-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  padding: 0 8%;
+  background-color: var(--bg-dark);
+}
+
+/* Texto de la pregunta: grande, blanco y sin margen raro */
+.reveal section.blue-slide .question-slide h2 {
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* Que las slides especiales llenen todo el alto del viewport */
+.reveal .slides section.title-slide,
+.reveal .slides section.blue-slide {
+  width: 100% !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* En las slides azules, esconder el h2 vacío que genera Quarto */
+.reveal section.blue-slide>h2 {
+  display: none !important;
+}
+
+/* Forzar centrado absoluto del bloque de pregunta */
+.reveal section.blue-slide {
+  display: flex !important;
+  align-items: center !important;
+  /* centro vertical */
+  justify-content: center !important;
+  /* centro horizontal */
+}
+
+/* El contenedor de la pregunta ocupa todo y centra el texto */
+.reveal section.blue-slide .question-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  padding: 0 8%;
+  background-color: var(--bg-dark);
+}
+
+/* Texto de la pregunta: grande, blanco y sin margen raro */
+.reveal section.blue-slide .question-slide h2 {
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: var(--text-light);
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* Cuando la slide actual tiene fondo oscuro (portada, preguntas),
+   cualquier contenedor con has-dark-background se vuelve azul completo */
+.has-dark-background,
+.has-dark-background body,
+.has-dark-background #quarto-content,
+.has-dark-background main,
+.has-dark-background .reveal-viewport,
+.has-dark-background .reveal,
+.has-dark-background .reveal .slides,
+.has-dark-background .reveal .backgrounds,
+.has-dark-background .reveal .backgrounds .slide-background {
+  background-color: var(--bg-dark) !important;
+}
+
+/* Ocultar el <h2> vacío de Quarto en portada y preguntas */
+.reveal section.title-slide>h2,
+.reveal section.blue-slide>h2 {
+  display: none !important;
+}
+
+
+/* ========================================================= */
+/* ====== ESTILOS EXTRA SOLO PARA EL INFORME EN HTML ====== */
+/* ========================================================= */
+
+/* 1) Ocultar la columna de AFFILIATION del bloque de título */
+.quarto-title-meta .quarto-title-affiliation {
+  display: none !important;
+}
+
+/* 2) Un poquito más de aire bajo el título y subtítulo */
+.quarto-title-block .quarto-title {
+  margin-bottom: 0.25rem;
+}
+
+.quarto-title-block .quarto-subtitle {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* 3) Ajustar ligeramente el ancho del contenido principal del informe */
+#quarto-content main.content {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 4) Opcional: que el texto del cuerpo use la misma familia tipo Segoe */
+body.quarto-light,
+body.quarto-dark {
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}

@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bárbara Yáñez">
+
+<title>Aplicación de Metaheurísticas y Computación Evolutiva al Problema del Viajero</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="informe_tsp_quarto_files/libs/clipboard/clipboard.min.js"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/popper.min.js"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="informe_tsp_quarto_files/libs/quarto-html/anchor.min.js"></script>
+<link href="informe_tsp_quarto_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="informe_tsp_quarto_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="informe_tsp_quarto_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="informe_tsp_quarto_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="informe_tsp_quarto_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción">1. Introducción</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos">2. Objetivos</a>
+  <ul class="collapse">
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general">Objetivo General</a></li>
+  <li><a href="#objetivos-específicos" id="toc-objetivos-específicos" class="nav-link" data-scroll-target="#objetivos-específicos">Objetivos Específicos</a></li>
+  </ul></li>
+  <li><a href="#marco-teórico-del-problema-del-viajero-tsp" id="toc-marco-teórico-del-problema-del-viajero-tsp" class="nav-link" data-scroll-target="#marco-teórico-del-problema-del-viajero-tsp">3. Marco Teórico del Problema del Viajero (TSP)</a></li>
+  <li><a href="#marco-teórico-de-computación-evolutiva-y-metaheurísticas" id="toc-marco-teórico-de-computación-evolutiva-y-metaheurísticas" class="nav-link" data-scroll-target="#marco-teórico-de-computación-evolutiva-y-metaheurísticas">4. Marco Teórico de Computación Evolutiva y Metaheurísticas</a></li>
+  <li><a href="#diseño-experimental" id="toc-diseño-experimental" class="nav-link" data-scroll-target="#diseño-experimental">5. Diseño Experimental</a>
+  <ul class="collapse">
+  <li><a href="#generación-de-instancias" id="toc-generación-de-instancias" class="nav-link" data-scroll-target="#generación-de-instancias">5.1 Generación de Instancias</a></li>
+  <li><a href="#algoritmos-evaluados" id="toc-algoritmos-evaluados" class="nav-link" data-scroll-target="#algoritmos-evaluados">5.2 Algoritmos Evaluados</a></li>
+  <li><a href="#métricas-de-evaluación-y-referencias-de-comparación" id="toc-métricas-de-evaluación-y-referencias-de-comparación" class="nav-link" data-scroll-target="#métricas-de-evaluación-y-referencias-de-comparación">5.3 Métricas de Evaluación y Referencias de Comparación</a></li>
+  <li><a href="#validación-de-rutas" id="toc-validación-de-rutas" class="nav-link" data-scroll-target="#validación-de-rutas">5.4 Validación de rutas</a></li>
+  </ul></li>
+  <li><a href="#implementación-computacional" id="toc-implementación-computacional" class="nav-link" data-scroll-target="#implementación-computacional">6. Implementación Computacional</a>
+  <ul class="collapse">
+  <li><a href="#representación-de-soluciones-y-estructuras-de-datos" id="toc-representación-de-soluciones-y-estructuras-de-datos" class="nav-link" data-scroll-target="#representación-de-soluciones-y-estructuras-de-datos">6.1 Representación de Soluciones y Estructuras de Datos</a></li>
+  <li><a href="#descripción-computacional-de-los-algoritmos" id="toc-descripción-computacional-de-los-algoritmos" class="nav-link" data-scroll-target="#descripción-computacional-de-los-algoritmos">6.2 Descripción Computacional de los Algoritmos</a></li>
+  <li><a href="#parámetros-de-control-de-los-algoritmos" id="toc-parámetros-de-control-de-los-algoritmos" class="nav-link" data-scroll-target="#parámetros-de-control-de-los-algoritmos">6.3 Parámetros de Control de los Algoritmos</a></li>
+  </ul></li>
+  <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados">7. Resultados</a>
+  <ul class="collapse">
+  <li><a href="#instancia-tsp_10" id="toc-instancia-tsp_10" class="nav-link" data-scroll-target="#instancia-tsp_10">7.1 Instancia TSP_10</a></li>
+  <li><a href="#instancia-tsp_20" id="toc-instancia-tsp_20" class="nav-link" data-scroll-target="#instancia-tsp_20">7.2 Instancia TSP_20</a></li>
+  <li><a href="#instancia-tsp_50" id="toc-instancia-tsp_50" class="nav-link" data-scroll-target="#instancia-tsp_50">7.3 Instancia TSP_50</a></li>
+  <li><a href="#instancia-tsp_100" id="toc-instancia-tsp_100" class="nav-link" data-scroll-target="#instancia-tsp_100">7.4 Instancia TSP_100</a></li>
+  <li><a href="#síntesis-global-relación-entre-calidad-y-costo-computacional" id="toc-síntesis-global-relación-entre-calidad-y-costo-computacional" class="nav-link" data-scroll-target="#síntesis-global-relación-entre-calidad-y-costo-computacional">7.5 Síntesis global: relación entre calidad y costo computacional</a></li>
+  <li><a href="#comparación-global-y-convergencia-de-metaheurísticas" id="toc-comparación-global-y-convergencia-de-metaheurísticas" class="nav-link" data-scroll-target="#comparación-global-y-convergencia-de-metaheurísticas">7.6 Comparación global y convergencia de metaheurísticas</a></li>
+  <li><a href="#ranking-general-de-algoritmos" id="toc-ranking-general-de-algoritmos" class="nav-link" data-scroll-target="#ranking-general-de-algoritmos">7.7 Ranking general de algoritmos</a></li>
+  </ul></li>
+  <li><a href="#discusión" id="toc-discusión" class="nav-link" data-scroll-target="#discusión">8. Discusión</a></li>
+  <li><a href="#conclusiones-y-recomendaciones" id="toc-conclusiones-y-recomendaciones" class="nav-link" data-scroll-target="#conclusiones-y-recomendaciones">9. Conclusiones y recomendaciones</a>
+  <ul class="collapse">
+  <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones">9.1 Conclusiones</a></li>
+  <li><a href="#recomendaciones-y-trabajo-futuro" id="toc-recomendaciones-y-trabajo-futuro" class="nav-link" data-scroll-target="#recomendaciones-y-trabajo-futuro">9.2 Recomendaciones y trabajo futuro</a></li>
+  </ul></li>
+  <li><a href="#anexos" id="toc-anexos" class="nav-link" data-scroll-target="#anexos">10. Anexos</a>
+  <ul class="collapse">
+  <li><a href="#parámetros-de-algoritmos" id="toc-parámetros-de-algoritmos" class="nav-link" data-scroll-target="#parámetros-de-algoritmos">Parámetros de algoritmos</a></li>
+  <li><a href="#rutas-completas-encontradas" id="toc-rutas-completas-encontradas" class="nav-link" data-scroll-target="#rutas-completas-encontradas">Rutas completas encontradas</a></li>
+  <li><a href="#validaciones-completas" id="toc-validaciones-completas" class="nav-link" data-scroll-target="#validaciones-completas">Validaciones completas</a></li>
+  <li><a href="#archivos-visuales-de-rutas" id="toc-archivos-visuales-de-rutas" class="nav-link" data-scroll-target="#archivos-visuales-de-rutas">Archivos visuales de rutas</a></li>
+  <li><a href="#archivos-usados-e-instrucciones-de-reproducción" id="toc-archivos-usados-e-instrucciones-de-reproducción" class="nav-link" data-scroll-target="#archivos-usados-e-instrucciones-de-reproducción">Archivos usados e instrucciones de reproducción</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">11. Referencias</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Aplicación de Metaheurísticas y Computación Evolutiva al Problema del Viajero</h1>
+<p class="subtitle lead">Comparación experimental de algoritmos para el TSP</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-contents">
+             <p>Bárbara Yáñez </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Fecha de publicación</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">3 de junio de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; font-size: 0.95rem;">
+<p>
+<strong>Asignatura:</strong> Computación Evolutiva
+</p>
+<p>
+<strong>Profesor:</strong> Cristian Inzulza
+</p>
+<p>
+<strong>Carrera:</strong> Ingeniería en Ciencia de Datos
+</p>
+<p>
+<strong>Institución:</strong> Universidad Mayor
+</p>
+</div>
+<section id="introducción" class="level2">
+<h2 class="anchored" data-anchor-id="introducción">1. Introducción</h2>
+<p>La optimización de procesos y recursos es un desafío central en diversas disciplinas científicas e industriales (Pop et al., 2024). Entre los problemas más estudiados en este ámbito se encuentra el Problema del Viajero (TSP, por sus siglas en inglés), un problema clásico de optimización combinatoria cuyo propósito es encontrar una ruta cerrada que visite un conjunto de ciudades exactamente una vez y vuelva al punto inicial, minimizando la distancia total recorrida.</p>
+<p>La dificultad inherente del TSP radica en la complejidad combinatoria de sus posibles soluciones. A medida que el número de ciudades aumenta, la cantidad de permutaciones posibles crece de manera factorial, lo que define el carácter NP-Hard del problema (Metaheurísticas I, s. f.). Debido a esta explosión combinatoria, los métodos exactos se vuelven rápidamente inviables desde el punto de vista computacional, siendo aplicables únicamente a instancias muy pequeñas.</p>
+<p>Para superar las limitaciones de los métodos exactos en instancias de mayor tamaño, la ciencia de la computación ha recurrido a estrategias de búsqueda aproximada. En este contexto, las heurísticas, las metaheurísticas y la computación evolutiva se presentan como alternativas robustas (Clase 3: Computación Evolutiva, s. f.). Estos enfoques buscan obtener soluciones de buena calidad en tiempos computacionalmente razonables, especialmente en instancias donde la búsqueda exacta deja de ser práctica (Metaheurísticas I, s. f.).</p>
+<p>El presente informe analiza y compara el rendimiento de diversas aproximaciones algorítmicas aplicadas a instancias del TSP de diferente dimensionalidad, abarcando desde métodos exactos y heurísticas constructivas, hasta metaheurísticas de trayectoria y métodos basados en población. El objetivo es identificar las fortalezas y debilidades de cada técnica al enfrentar la explosión combinatoria propia de este problema.</p>
+</section>
+<section id="objetivos" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos">2. Objetivos</h2>
+<section id="objetivo-general" class="level3">
+<h3 class="anchored" data-anchor-id="objetivo-general">Objetivo General</h3>
+<p>Evaluar y comparar el rendimiento de métodos exactos, heurísticos y metaheurísticos en la resolución del Problema del Viajero (TSP), analizando el balance entre la calidad de la solución y el tiempo de ejecución en instancias de diferente dimensionalidad.</p>
+</section>
+<section id="objetivos-específicos" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-específicos">Objetivos Específicos</h3>
+<ol type="1">
+<li>Implementar un abanico de algoritmos de optimización que abarque búsquedas exactas, heurísticas constructivas, búsquedas locales, metaheurísticas de trayectoria y métodos basados en población.</li>
+<li>Generar y evaluar el desempeño de los algoritmos sobre instancias experimentales del TSP de distinto tamaño: TSP_10, TSP_20, TSP_50 y TSP_100.</li>
+<li>Analizar la precisión de los algoritmos calculando el error relativo respecto al valor óptimo exacto obtenido mediante fuerza bruta para TSP_10.</li>
+<li>Evaluar la calidad de los resultados en TSP_20, TSP_50 y TSP_100 utilizando el error relativo frente a la mejor referencia experimental encontrada, sin asumir optimalidad global.</li>
+<li>Comparar la calidad de la solución versus el tiempo de ejecución para determinar las estrategias algorítmicas más eficientes según la escala del problema.</li>
+</ol>
+</section>
+</section>
+<section id="marco-teórico-del-problema-del-viajero-tsp" class="level2">
+<h2 class="anchored" data-anchor-id="marco-teórico-del-problema-del-viajero-tsp">3. Marco Teórico del Problema del Viajero (TSP)</h2>
+<p>El Problema del Viajero (TSP) es un problema fundamental de enrutamiento y optimización combinatoria (Pop et al., 2024). Matemáticamente, puede modelarse utilizando un grafo donde los nodos representan las ciudades y las aristas representan las distancias, por ejemplo, distancias euclidianas en un plano 2D, entre pares de ciudades. El objetivo del problema es descubrir el ciclo hamiltoniano óptimo; es decir, un recorrido cerrado que visite cada nodo exactamente una vez, regrese al origen y minimice la sumatoria de los costos o distancias de las aristas transitadas.</p>
+<p>El mayor obstáculo para resolver el TSP es su complejidad combinatoria. Para un problema simétrico con (n) ciudades, el crecimiento factorial implica que el espacio de búsqueda se vuelve inabarcable de forma exhaustiva a medida que (n) aumenta (Metaheurísticas I, s. f.). Debido a este carácter NP-Hard del problema, los métodos exactos solo son viables para instancias de tamaño reducido. Para instancias medianas y grandes, el costo computacional obliga a la adopción de algoritmos aproximados (Metaheurísticas I, s. f.).</p>
+<p>Una solución del TSP puede representarse como una permutación de ciudades, donde el orden de la permutación define el recorrido (Eiben &amp; Smith, 2015). Esta representación es especialmente importante para los algoritmos evolutivos, porque los operadores de cruce y mutación deben preservar rutas válidas, es decir, sin ciudades repetidas ni ciudades omitidas.</p>
+</section>
+<section id="marco-teórico-de-computación-evolutiva-y-metaheurísticas" class="level2">
+<h2 class="anchored" data-anchor-id="marco-teórico-de-computación-evolutiva-y-metaheurísticas">4. Marco Teórico de Computación Evolutiva y Metaheurísticas</h2>
+<p>Frente a espacios de búsqueda exponenciales donde los enfoques exactos dejan de ser prácticos, emergen las metaheurísticas y la computación evolutiva. Una metaheurística es un marco algorítmico de búsqueda inteligente que guía y modifica a otras heurísticas subordinadas para explorar el espacio de soluciones de forma eficiente (Metaheurísticas I, s. f.). Por su parte, la computación evolutiva es una técnica de inteligencia artificial inspirada en la selección natural de la biología, como supervivencia del más apto, reproducción y mutación, que utiliza poblaciones de soluciones candidatas que evolucionan iterativamente con el tiempo (Clase 3: Computación Evolutiva, s. f.).</p>
+<p>El éxito de cualquier metaheurística o algoritmo evolutivo depende críticamente de cómo gestiona el balance dinámico entre dos fuerzas fundamentales de búsqueda: la exploración y la explotación (Metaheurísticas I, s. f.).</p>
+<ul>
+<li><strong>Exploración (Diversificación):</strong> consiste en navegar hacia regiones del espacio de búsqueda que son completamente nuevas o desconocidas. Su propósito es evitar que el algoritmo quede atrapado en valles subóptimos conocidos como óptimos locales (Metaheurísticas II, s. f.).</li>
+<li><strong>Explotación (Intensificación):</strong> consiste en refinar y mejorar de forma intensiva las soluciones actuales que ya han demostrado ser prometedoras, buscando exhaustivamente en su vecindario inmediato para aislar la mejor variante posible.</li>
+</ul>
+<p>En la práctica algorítmica, resulta imperativo lograr un buen equilibrio entre calidad de solución y tiempo de ejecución. Dado que en entornos reales no se suele disponer del tiempo necesario para alcanzar una solución óptima demostrable mediante métodos exactos, el objetivo se traslada a la eficiencia: obtener soluciones de buena calidad en tiempos computacionalmente razonables, especialmente en instancias donde la búsqueda exacta deja de ser práctica (Metaheurísticas I, s. f.).</p>
+<p>Para este estudio, los algoritmos implementados se clasifican de la siguiente manera:</p>
+<ul>
+<li><strong>Fuerza bruta:</strong> método exacto que evalúa exhaustivamente todas las rutas posibles. Garantiza el óptimo para instancias pequeñas, pero su costo computacional crece rápidamente y se vuelve inviable para instancias grandes (Metaheurísticas I, s. f.).</li>
+<li><strong>Greedy (vecino más cercano):</strong> heurística constructiva que forma la ruta paso a paso eligiendo la opción local más favorable. Es sumamente rápida, pero miope frente al óptimo global, quedando atrapada fácilmente en óptimos locales (Metaheurísticas I, s. f.).</li>
+<li><strong>2-opt:</strong> búsqueda local basada en mejora iterativa que parte de una solución inicial y la refina moviéndose sistemáticamente a mejores vecinos.</li>
+<li><strong>Or-opt / 3-opt simplificado:</strong> búsqueda local basada en la reubicación de segmentos de la ruta. A diferencia de 2-opt, que invierte partes de la ruta eliminando cruces entre dos aristas, esta variante permite mover bloques o segmentos, ampliando el vecindario de soluciones exploradas (Wang &amp; Han, 2021).</li>
+<li><strong>ILS (Iterated Local Search):</strong> metaheurística de búsqueda local iterada que combina la intensificación con pasos de perturbación para escapar de los óptimos locales y explorar nuevos valles (Metaheurísticas I, s. f.).</li>
+<li><strong>Tabu Search:</strong> metaheurística con memoria que utiliza listas tabú para guardar movimientos recientes y prohibirlos temporalmente. Esto obliga al algoritmo a aceptar el mejor vecino disponible, incluso si empeora la solución, impidiendo así ciclos infinitos (Metaheurísticas I, s. f.).</li>
+<li><strong>Simulated Annealing:</strong> metaheurística probabilística inspirada en el enfriamiento de metales, que permite aceptar ocasionalmente soluciones peores guiándose por una probabilidad térmica, lo cual facilita escapar de trampas locales durante la fase de exploración (Metaheurísticas I, s. f.).</li>
+<li><strong>Algoritmo Genético:</strong> método de computación evolutiva basado en población que mantiene múltiples soluciones simultáneas, combinándolas y alterándolas para transferir características exitosas (Clase 3: Computación Evolutiva, s. f.). Dado que el problema exige una estructura de ciclo hamiltoniano, se deben emplear operadores genéticos especializados que preserven la estructura de permutación de la ruta sin generar ciudades repetidas ni omitidas (Eiben &amp; Smith, 2015).</li>
+<li><strong>GRASP (Greedy Randomized Adaptive Search Procedure):</strong> metaheurística constructiva aleatorizada que fusiona la velocidad de un enfoque greedy con decisiones probabilísticas controladas mediante una lista restringida de candidatos, refinando posteriormente cada resultado con búsqueda local (Metaheurísticas I, s. f.).</li>
+<li><strong>VNS (Variable Neighborhood Search):</strong> metaheurística basada en el cambio sistemático de vecindarios que altera de forma dinámica la escala y el tipo de los movimientos de búsqueda para escapar eficientemente al detectar un estancamiento (Metaheurísticas II, s. f.).</li>
+</ul>
+</section>
+<section id="diseño-experimental" class="level2">
+<h2 class="anchored" data-anchor-id="diseño-experimental">5. Diseño Experimental</h2>
+<p>Para evaluar de manera rigurosa y objetiva el desempeño de los métodos exactos, heurísticos y metaheurísticos descritos, se estructuró un diseño experimental basado en la resolución de instancias sintéticas del Problema del Viajero (TSP). El experimento se centró en analizar el comportamiento de los algoritmos al enfrentar el crecimiento combinatorio característico de este problema (Metaheurísticas I, s. f.).</p>
+<section id="generación-de-instancias" class="level3">
+<h3 class="anchored" data-anchor-id="generación-de-instancias">5.1 Generación de Instancias</h3>
+<p>El estudio consideró la generación de cuatro instancias experimentales de distinto tamaño, denominadas de acuerdo a su cantidad de nodos: TSP_10, TSP_20, TSP_50 y TSP_100. En todas ellas, las ciudades fueron modeladas como coordenadas espaciales distribuidas aleatoriamente en un plano 2D, controlando la aleatoriedad del experimento cuando correspondió, con el fin de favorecer la reproducibilidad. Las distancias entre cada par de ciudades se calcularon utilizando la métrica de distancia euclidiana, conformando así una matriz de distancias simétrica. Toda ruta válida generada en este experimento corresponde a una permutación que visita cada ciudad exactamente una vez y retorna al punto de origen.</p>
+<p>El objetivo de utilizar instancias de dimensionalidad creciente es observar de manera empírica cómo cambia el rendimiento de los algoritmos, tanto en términos de tiempo de ejecución como en la calidad de la solución, a medida que aumenta la complejidad combinatoria del problema.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 19%">
+<col style="width: 20%">
+<col style="width: 21%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Instancia</th>
+<th style="text-align: right;">Número de ciudades</th>
+<th>Tipo de coordenadas</th>
+<th>Métrica de distancia</th>
+<th>Referencia de comparación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TSP_10</td>
+<td style="text-align: right;">10</td>
+<td>Coordenadas 2D</td>
+<td>Distancia euclidiana</td>
+<td>Óptimo exacto por fuerza bruta</td>
+</tr>
+<tr class="even">
+<td>TSP_20</td>
+<td style="text-align: right;">20</td>
+<td>Coordenadas 2D</td>
+<td>Distancia euclidiana</td>
+<td>Mejor solución experimental encontrada</td>
+</tr>
+<tr class="odd">
+<td>TSP_50</td>
+<td style="text-align: right;">50</td>
+<td>Coordenadas 2D</td>
+<td>Distancia euclidiana</td>
+<td>Mejor solución experimental encontrada</td>
+</tr>
+<tr class="even">
+<td>TSP_100</td>
+<td style="text-align: right;">100</td>
+<td>Coordenadas 2D</td>
+<td>Distancia euclidiana</td>
+<td>Mejor solución experimental encontrada</td>
+</tr>
+</tbody>
+</table>
+<p>La tabla anterior resume el diseño de las instancias experimentales. Además, los archivos reales de coordenadas y referencias consolidadas se leen desde la carpeta <code>resultados/</code>, como se muestra a continuación.</p>
+<div id="d6570160" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Instancia</th>
+<th data-quarto-table-cell-role="th">Número de ciudades</th>
+<th data-quarto-table-cell-role="th">Archivo de coordenadas</th>
+<th data-quarto-table-cell-role="th">Tipo de referencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>TSP_10</td>
+<td>10</td>
+<td>resultados/coordenadas_TSP_10.csv</td>
+<td>Distancia óptima exacta</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>TSP_20</td>
+<td>20</td>
+<td>resultados/coordenadas_TSP_20.csv</td>
+<td>Mejor referencia experimental</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">28</th>
+<td>TSP_50</td>
+<td>50</td>
+<td>resultados/coordenadas_TSP_50.csv</td>
+<td>Mejor referencia experimental</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">10</th>
+<td>TSP_100</td>
+<td>100</td>
+<td>resultados/coordenadas_TSP_100.csv</td>
+<td>Mejor referencia experimental</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Los gráficos de dispersión siguientes muestran la distribución espacial inicial de las ciudades para las instancias TSP_10, TSP_20, TSP_50 y TSP_100.</p>
+<div id="b5d22390" class="cell" data-execution_count="3">
+<section id="distribución-espacial-inicial-de-tsp_10" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="distribución-espacial-inicial-de-tsp_10">Distribución espacial inicial de TSP_10</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/ciudades_TSP_10.png" alt="Ciudades de TSP_10" width="85%">
+</p>
+</div>
+<section id="distribución-espacial-inicial-de-tsp_20" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="distribución-espacial-inicial-de-tsp_20">Distribución espacial inicial de TSP_20</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/ciudades_TSP_20.png" alt="Ciudades de TSP_20" width="85%">
+</p>
+</div>
+<section id="distribución-espacial-inicial-de-tsp_50" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="distribución-espacial-inicial-de-tsp_50">Distribución espacial inicial de TSP_50</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/ciudades_TSP_50.png" alt="Ciudades de TSP_50" width="85%">
+</p>
+</div>
+<section id="distribución-espacial-inicial-de-tsp_100" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="distribución-espacial-inicial-de-tsp_100">Distribución espacial inicial de TSP_100</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/ciudades_TSP_100.png" alt="Ciudades de TSP_100" width="85%">
+</p>
+</div>
+</div>
+</section>
+<section id="algoritmos-evaluados" class="level3">
+<h3 class="anchored" data-anchor-id="algoritmos-evaluados">5.2 Algoritmos Evaluados</h3>
+<p>Todos los algoritmos considerados en el marco teórico fueron sometidos a las mismas condiciones experimentales. El conjunto de técnicas evaluadas incluye:</p>
+<ul>
+<li><strong>Método exacto:</strong> Fuerza bruta.</li>
+<li><strong>Heurística constructiva:</strong> Greedy (vecino más cercano).</li>
+<li><strong>Búsquedas locales:</strong> 2-opt y Or-opt / 3-opt simplificado.</li>
+<li><strong>Metaheurísticas:</strong> ILS, Tabu Search, Simulated Annealing, Algoritmo Genético, GRASP y VNS.</li>
+</ul>
+<p>Cabe destacar que el método de fuerza bruta se aplicó de manera exclusiva a la instancia TSP_10, debido a que el crecimiento factorial de las permutaciones vuelve computacionalmente inviable su ejecución para 20 o más ciudades (Eiben &amp; Smith, 2015).</p>
+<p>La siguiente tabla corresponde a los algoritmos efectivamente detectados en los resultados consolidados del proyecto.</p>
+</section>
+<section id="métricas-de-evaluación-y-referencias-de-comparación" class="level3">
+<h3 class="anchored" data-anchor-id="métricas-de-evaluación-y-referencias-de-comparación">5.3 Métricas de Evaluación y Referencias de Comparación</h3>
+<p>Para medir y comparar el rendimiento de los distintos algoritmos, el experimento se basó fundamentalmente en dos dimensiones críticas: la calidad de la ruta obtenida y el costo computacional invertido.</p>
+<p>La calidad de la solución se evaluó calculando la distancia total de la ruta generada y determinando su <strong>error relativo</strong>. La fórmula utilizada para el cálculo porcentual del error es la siguiente:</p>
+<p><span class="math display">\[
+\text{Error relativo (\%)} =
+\frac{
+\text{Distancia obtenida} - \text{Distancia de referencia}
+}{
+\text{Distancia de referencia}
+}
+\times 100
+\]</span></p>
+<p>La interpretación del error relativo en este diseño experimental requiere una consideración metodológica fundamental respecto a la distancia de referencia:</p>
+<ol type="1">
+<li><strong>En la instancia TSP_10:</strong> dado que es posible evaluar exhaustivamente todas las rutas, la distancia de referencia corresponde al valor óptimo exacto obtenido mediante fuerza bruta. Por lo tanto, el error relativo aquí mide la diferencia porcentual entre la distancia obtenida por cada algoritmo y el valor óptimo exacto.</li>
+<li><strong>En las instancias TSP_20, TSP_50 y TSP_100:</strong> dado que no se asume optimalidad global porque la búsqueda exacta es impracticable, la distancia de referencia corresponde a la mejor solución experimental encontrada a lo largo de todas las pruebas realizadas en el proyecto. En este caso, el error relativo mide qué tan competitiva es una solución comparada con el mejor valor de referencia obtenido empíricamente.</li>
+</ol>
+<p>Como métrica de costo computacional, se registró el <strong>tiempo de ejecución</strong> de cada algoritmo. En la práctica de la computación evolutiva, la evaluación del desempeño no se centra únicamente en encontrar la ruta más corta, sino en identificar las técnicas que ofrezcan el mejor compromiso entre los recursos invertidos y la solución generada (Eiben &amp; Smith, 2015).</p>
+<p>En consecuencia, los resultados derivados de este diseño experimental deben analizarse considerando simultáneamente la calidad de la solución, la validez de la ruta, el error relativo alcanzado frente a la referencia y el tiempo de ejecución requerido para su obtención.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 37%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Métrica</th>
+<th>Descripción</th>
+<th>Método de obtención</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Distancia total</td>
+<td>Longitud completa de la ruta obtenida</td>
+<td>Suma de distancias entre ciudades consecutivas y retorno al origen</td>
+<td>Menor distancia implica mejor solución</td>
+</tr>
+<tr class="even">
+<td>Error relativo (%)</td>
+<td>Diferencia porcentual respecto a la referencia</td>
+<td>Fórmula de error relativo</td>
+<td>Permite comparar algoritmos dentro de una misma instancia</td>
+</tr>
+<tr class="odd">
+<td>Tiempo de ejecución</td>
+<td>Tiempo requerido por cada algoritmo</td>
+<td>Medición computacional durante la ejecución</td>
+<td>Representa el costo computacional</td>
+</tr>
+<tr class="even">
+<td>Validez de ruta</td>
+<td>Verificación de que no existan ciudades repetidas u omitidas</td>
+<td>Validación de permutación</td>
+<td>Asegura que la solución sea factible para el TSP</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="validación-de-rutas" class="level3">
+<h3 class="anchored" data-anchor-id="validación-de-rutas">5.4 Validación de rutas</h3>
+<p>La validez de las rutas se revisa con criterios explícitos: inicio y término en la misma ciudad, visita de todas las ciudades, ausencia de repeticiones intermedias, largo (n+1) y ciudades dentro del rango correcto.</p>
+<p>Esta validación es importante porque una ruta con baja distancia no sería aceptable si incumple las restricciones básicas del TSP.</p>
+</section>
+</section>
+<section id="implementación-computacional" class="level2">
+<h2 class="anchored" data-anchor-id="implementación-computacional">6. Implementación Computacional</h2>
+<p>Esta sección detalla los aspectos técnicos y las decisiones de diseño adoptadas para la programación de los algoritmos y el manejo de los datos durante los experimentos. La correcta representación computacional del problema es fundamental para garantizar la eficiencia de las búsquedas y la validez de los resultados obtenidos (Eiben &amp; Smith, 2015).</p>
+<section id="representación-de-soluciones-y-estructuras-de-datos" class="level3">
+<h3 class="anchored" data-anchor-id="representación-de-soluciones-y-estructuras-de-datos">6.1 Representación de Soluciones y Estructuras de Datos</h3>
+<p>Para modelar computacionalmente el Problema del Viajero (TSP), cada solución, o ruta, se representó de forma natural como una permutación de números enteros, donde cada número identifica unívocamente a una ciudad (Eiben &amp; Smith, 2015). Esta estructura de datos garantiza que el recorrido cumpla con la restricción principal del ciclo hamiltoniano: visitar todas las ciudades de la instancia exactamente una vez. Para cerrar el ciclo, la evaluación de la función objetivo añade automáticamente la distancia de retorno desde la última ciudad de la permutación hacia la ciudad inicial.</p>
+<p>Como mecanismo de control de calidad, se implementó una rutina de validación computacional al finalizar la ejecución de cada algoritmo. Este proceso verificó matemáticamente que ninguna ruta generada contuviera ciudades repetidas ni omitiera nodos del conjunto original, asegurando así la factibilidad de todas las soluciones reportadas.</p>
+<p>Para optimizar el costo de evaluación computacional, se precalculó una matriz de distancias euclidianas a partir de las coordenadas 2D de las ciudades. Esta matriz, al ser simétrica, permite consultar en tiempo constante, (O(1)), la distancia entre cualquier par de ciudades, evitando recalcular la fórmula euclidiana repetidas veces durante el proceso iterativo de las metaheurísticas.</p>
+<p>Finalmente, la implementación se estandarizó para que la función principal de cada algoritmo retornara una estructura de datos uniforme que incluye tres componentes esenciales para el análisis:</p>
+<ol type="1">
+<li><strong>Ruta obtenida:</strong> el vector ordenado que representa la mejor permutación encontrada.</li>
+<li><strong>Distancia total:</strong> el costo o longitud total de dicha ruta.</li>
+<li><strong>Tiempo de ejecución:</strong> el tiempo en segundos que el algoritmo tardó en generar la solución, utilizado como métrica directa del costo computacional.</li>
+</ol>
+</section>
+<section id="descripción-computacional-de-los-algoritmos" class="level3">
+<h3 class="anchored" data-anchor-id="descripción-computacional-de-los-algoritmos">6.2 Descripción Computacional de los Algoritmos</h3>
+<p>Cada uno de los métodos evaluados fue programado siguiendo su mecánica operativa característica. A continuación, se describe brevemente el rol computacional de cada algoritmo dentro del proyecto:</p>
+<ul>
+<li><strong>Fuerza bruta:</strong> implementado como un procedimiento exhaustivo que evalúa todas las rutas posibles para la instancia pequeña. Se utilizó exclusivamente en la instancia <code>TSP_10</code> para encontrar el valor óptimo exacto y establecer una referencia exacta para la instancia pequeña (Metaheurísticas I, s. f.).</li>
+<li><strong>Greedy (vecino más cercano):</strong> programado como un proceso iterativo constructivo. Partiendo de una ciudad inicial, busca en la matriz de distancias la ciudad no visitada con el valor más bajo y la añade a la ruta, repitiendo el proceso hasta completar la permutación (Metaheurísticas I, s. f.).</li>
+<li><strong>2-opt:</strong> operador de búsqueda local que evalúa pares de aristas dentro de la ruta y, cuando detecta una mejora, invierte el segmento intermedio para reducir la distancia total (Metaheurísticas II, s. f.).</li>
+<li><strong>Or-opt / 3-opt simplificado:</strong> algoritmo de búsqueda local que extrae sub-bloques o segmentos cortos contiguos de la permutación actual y evalúa el impacto en la distancia al reubicarlos en distintas posiciones de la ruta (Metaheurísticas II, s. f.).</li>
+<li><strong>ILS (Iterated Local Search):</strong> estructurado mediante un bucle principal que alterna entre aplicar una búsqueda local hasta alcanzar una solución localmente mejorada y aplicar una función de perturbación computacional que modifica la permutación para reiniciar la búsqueda (Metaheurísticas I, s. f.).</li>
+<li><strong>Tabu Search:</strong> búsqueda local dotada de una estructura de memoria tipo lista tabú que registra y penaliza movimientos recientes. Computacionalmente, esto obliga a la búsqueda a seleccionar el mejor vecino factible no tabú, permitiendo al algoritmo salir de ciclos repetitivos (Metaheurísticas I, s. f.).</li>
+<li><strong>Simulated Annealing:</strong> programado con un bucle de enfriamiento. Si el vecino generado aleatoriamente es mejor, la permutación se actualiza. Si es peor, existe una probabilidad computacional, basada en la función exponencial decreciente de la temperatura y la diferencia de distancia, de aceptarlo, evitando el estancamiento prematuro (Metaheurísticas I, s. f.).</li>
+<li><strong>Algoritmo Genético:</strong> modelo poblacional iterativo. Inicializa un conjunto de permutaciones y utiliza operadores evolutivos que preservan la estructura del TSP. Implementa un mecanismo de selección, cruce, mutación y reemplazo definido en el código, procurando preservar rutas válidas sin ciudades repetidas ni omitidas (Clase 3: Computación Evolutiva, s. f.; Eiben &amp; Smith, 2015).</li>
+<li><strong>GRASP (Greedy Randomized Adaptive Search Procedure):</strong> sistema de dos fases. Primero, construye de forma iterativa y pseudoaleatoria soluciones iniciales utilizando una Lista Restringida de Candidatos (RCL) calculada dinámicamente; luego, pasa esa estructura a un procedimiento de búsqueda local para su refinamiento intensivo (Metaheurísticas II, s. f.).</li>
+<li><strong>VNS (Variable Neighborhood Search):</strong> estructura modular que intercambia en tiempo de ejecución los operadores generadores de vecindarios, escalando el tipo de alteración sobre la ruta para favorecer el escape sistemático cuando el progreso computacional se estanca (Metaheurísticas II, s. f.).</li>
+</ul>
+</section>
+<section id="parámetros-de-control-de-los-algoritmos" class="level3">
+<h3 class="anchored" data-anchor-id="parámetros-de-control-de-los-algoritmos">6.3 Parámetros de Control de los Algoritmos</h3>
+<p>El comportamiento de los métodos estocásticos, las metaheurísticas y los algoritmos evolutivos depende fuertemente de la configuración de sus hiperparámetros (Eiben &amp; Smith, 2015). Con el fin de asegurar la reproducibilidad de este estudio y habilitar un análisis justo sobre el balance entre calidad y tiempo, la siguiente tabla resume los hiperparámetros considerados para los algoritmos evaluados.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 44%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Algoritmo</th>
+<th>Parámetro principal</th>
+<th>Valor utilizado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tabu Search</td>
+<td>Tamaño de la lista tabú</td>
+<td>10 o 14, según instancia</td>
+</tr>
+<tr class="even">
+<td>Tabu Search</td>
+<td>Número máximo de iteraciones</td>
+<td>60, 80 o 110, según instancia</td>
+</tr>
+<tr class="odd">
+<td>Simulated Annealing</td>
+<td>Temperatura inicial (<span class="math inline">\(T_0\)</span>)</td>
+<td>140.0 o 190.0, según instancia</td>
+</tr>
+<tr class="even">
+<td>Simulated Annealing</td>
+<td>Tasa de enfriamiento (<span class="math inline">\(\alpha\)</span>)</td>
+<td>0.9965</td>
+</tr>
+<tr class="odd">
+<td>Simulated Annealing</td>
+<td>Criterio de parada (<span class="math inline">\(T_{min}\)</span>)</td>
+<td>0.0001</td>
+</tr>
+<tr class="even">
+<td>ILS</td>
+<td>Nivel de perturbación</td>
+<td>dato a verificar</td>
+</tr>
+<tr class="odd">
+<td>ILS</td>
+<td>Criterio de reinicio / iteraciones</td>
+<td>16, 24 o 40, según instancia</td>
+</tr>
+<tr class="even">
+<td>Algoritmo Genético</td>
+<td>Tamaño de la población</td>
+<td>42 o 50, según instancia</td>
+</tr>
+<tr class="odd">
+<td>Algoritmo Genético</td>
+<td>Probabilidad de cruce (<span class="math inline">\(p_c\)</span>)</td>
+<td>dato a verificar</td>
+</tr>
+<tr class="even">
+<td>Algoritmo Genético</td>
+<td>Probabilidad de mutación (<span class="math inline">\(p_m\)</span>)</td>
+<td>0.18</td>
+</tr>
+<tr class="odd">
+<td>Algoritmo Genético</td>
+<td>Número de generaciones</td>
+<td>45, 60 o 75, según instancia</td>
+</tr>
+<tr class="even">
+<td>GRASP</td>
+<td>Parámetro de restricción (<span class="math inline">\(\alpha\)</span> en RCL)</td>
+<td>0.35</td>
+</tr>
+<tr class="odd">
+<td>GRASP</td>
+<td>Número de construcciones / iteraciones</td>
+<td>9, 14 o 24, según instancia</td>
+</tr>
+<tr class="even">
+<td>VNS</td>
+<td>Estructuras de vecindarios (<span class="math inline">\(k_{max}\)</span>)</td>
+<td>swap, inversión, inserción y Or-opt</td>
+</tr>
+<tr class="odd">
+<td>VNS</td>
+<td>Iteraciones máximas sin mejora</td>
+<td>dato a verificar</td>
+</tr>
+</tbody>
+</table>
+<p>Los valores marcados como “dato a verificar” no aparecen explícitamente como hiperparámetro consolidado en <code>tablas/parametros_algoritmos.csv</code>. Por esta razón, no se infieren ni se reemplazan por valores no confirmados.</p>
+<p>Como respaldo, la tabla completa de parámetros registrados por instancia, algoritmo y repetición se incluye en los anexos.</p>
+</section>
+</section>
+<section id="resultados" class="level2">
+<h2 class="anchored" data-anchor-id="resultados">7. Resultados</h2>
+<p>En esta sección los resultados se presentan como una historia por instancia. La idea es observar primero la forma espacial del problema, luego revisar la tabla comparativa de métricas, interpretar distancia y error relativo, analizar el tiempo de ejecución, observar la ruta ganadora mediante GIF y cerrar con la relación entre calidad y costo computacional.</p>
+<section id="instancia-tsp_10" class="level3">
+<h3 class="anchored" data-anchor-id="instancia-tsp_10">7.1 Instancia TSP_10</h3>
+<section id="tabla-comparativa-de-métricas-para-tsp_10" class="level4">
+<h4 class="anchored" data-anchor-id="tabla-comparativa-de-métricas-para-tsp_10">7.1.1 Tabla comparativa de métricas para TSP_10</h4>
+<p>La tabla siguiente resume el desempeño de cada algoritmo en esta instancia. Se comparan la distancia obtenida, la referencia usada, el error relativo, el tiempo promedio y la validez de la ruta.</p>
+<div id="5b89ea33" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Tipo</th>
+<th data-quarto-table-cell-role="th">Mejor distancia</th>
+<th data-quarto-table-cell-role="th">Distancia de referencia</th>
+<th data-quarto-table-cell-role="th">Tipo de referencia</th>
+<th data-quarto-table-cell-role="th">Error relativo %</th>
+<th data-quarto-table-cell-role="th">Tiempo promedio</th>
+<th data-quarto-table-cell-role="th">Ruta válida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Or-opt / 3-opt simplificado</td>
+<td>Mejora local</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0015</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>Simulated Annealing</td>
+<td>Trayectoria probabilística</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0099</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5</th>
+<td>ILS</td>
+<td>Trayectoria</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0114</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>GRASP</td>
+<td>Constructivo + mejora</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0136</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>Tabu Search</td>
+<td>Trayectoria con memoria</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0402</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Algoritmo Genético</td>
+<td>Poblacional evolutivo</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.0936</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">9</th>
+<td>VNS</td>
+<td>Búsqueda por vecindarios variables</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>0.2248</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Fuerza bruta exacta</td>
+<td>Exacto</td>
+<td>279.2895</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>0.0000</td>
+<td>1.5926</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Búsqueda local 2-opt</td>
+<td>Mejora local</td>
+<td>305.8516</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>9.5106</td>
+<td>0.0004</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Greedy vecino más cercano</td>
+<td>Constructivo</td>
+<td>361.5642</td>
+<td>279.2895</td>
+<td>Distancia óptima exacta</td>
+<td>29.4586</td>
+<td>0.0000</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_10, la mejor distancia registrada corresponde a Or-opt / 3-opt simplificado, con una distancia de 279.2895 y un error relativo de 0.0000%. La referencia utilizada para esta instancia es Distancia óptima exacta. En términos de rapidez, el menor tiempo promedio lo obtuvo Greedy vecino más cercano con 0.000031 segundos. El mayor error relativo se observa en Greedy vecino más cercano, lo que permite distinguir entre una solución rápida y una solución de mejor calidad.</p>
+</div>
+</div>
+</section>
+<section id="distancia-y-error-relativo-en-tsp_10" class="level4">
+<h4 class="anchored" data-anchor-id="distancia-y-error-relativo-en-tsp_10">7.1.2 Distancia y error relativo en TSP_10</h4>
+<p>Después de revisar la tabla, los gráficos de distancia y error relativo permiten observar visualmente qué algoritmos se acercan más a la referencia de comparación y cuáles quedan más alejados.</p>
+<div id="1883fb6f" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/distancia_algoritmos_TSP_10.png" alt="Distancia por algoritmo en TSP_10" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/error_relativo_TSP_10.png" alt="Error relativo por algoritmo en TSP_10" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>Estos gráficos permiten observar la calidad de las soluciones en TSP_10. Los algoritmos con menor error relativo se ubican más cerca de la referencia; en esta instancia, destacan Algoritmo Genético, Fuerza bruta exacta, GRASP, ILS. Las barras de error muestran con claridad qué métodos quedan más alejados de la mejor distancia disponible para la comparación.</p>
+</div>
+</div>
+</section>
+<section id="tiempo-de-ejecución-en-tsp_10" class="level4">
+<h4 class="anchored" data-anchor-id="tiempo-de-ejecución-en-tsp_10">7.1.3 Tiempo de ejecución en TSP_10</h4>
+<p>El siguiente paso es revisar el costo computacional. Este gráfico muestra cuánto tarda cada algoritmo en promedio y ayuda a distinguir métodos rápidos de métodos más costosos.</p>
+<div id="1fd0dc70" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/tiempo_algoritmos_TSP_10.png" alt="Tiempo por algoritmo en TSP_10" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El gráfico de tiempo de TSP_10 muestra el costo computacional relativo de cada método. El algoritmo más rápido fue Greedy vecino más cercano, mientras que el mayor tiempo promedio correspondió a Fuerza bruta exacta. Esta diferencia es relevante porque una mejor distancia no siempre se obtiene con el menor costo computacional.</p>
+</div>
+</div>
+</section>
+<section id="ruta-ganadora-animada-de-tsp_10" class="level4">
+<h4 class="anchored" data-anchor-id="ruta-ganadora-animada-de-tsp_10">7.1.4 Ruta ganadora animada de TSP_10</h4>
+<p>Una vez identificada la mejor solución, el GIF permite observar el recorrido ciudad por ciudad. Esta visualización transforma la ruta ganadora en una secuencia interpretable y más útil para explicar el resultado.</p>
+<div id="f1c7a484" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="gifs/animacion_ruta_ganadora_TSP_10.gif" alt="GIF ruta ganadora TSP_10" width="75%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El GIF muestra paso a paso la ruta ganadora de TSP_10. En esta instancia, el algoritmo ganador fue Or-opt / 3-opt simplificado, con distancia 279.2895. Esta visualización ayuda a explicar la solución como recorrido secuencial de ciudad en ciudad, en lugar de verla solo como una línea estática.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="instancia-tsp_20" class="level3">
+<h3 class="anchored" data-anchor-id="instancia-tsp_20">7.2 Instancia TSP_20</h3>
+<section id="tabla-comparativa-de-métricas-para-tsp_20" class="level4">
+<h4 class="anchored" data-anchor-id="tabla-comparativa-de-métricas-para-tsp_20">7.2.1 Tabla comparativa de métricas para TSP_20</h4>
+<p>La tabla siguiente resume el desempeño de cada algoritmo en esta instancia. Se comparan la distancia obtenida, la referencia usada, el error relativo, el tiempo promedio y la validez de la ruta.</p>
+<div id="6e2921be" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Tipo</th>
+<th data-quarto-table-cell-role="th">Mejor distancia</th>
+<th data-quarto-table-cell-role="th">Distancia de referencia</th>
+<th data-quarto-table-cell-role="th">Tipo de referencia</th>
+<th data-quarto-table-cell-role="th">Error relativo %</th>
+<th data-quarto-table-cell-role="th">Tiempo promedio</th>
+<th data-quarto-table-cell-role="th">Ruta válida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">24</th>
+<td>Or-opt / 3-opt simplificado</td>
+<td>Mejora local</td>
+<td>344.0890</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>0.0121</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">26</th>
+<td>Tabu Search</td>
+<td>Trayectoria con memoria</td>
+<td>344.0890</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>0.0576</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">19</th>
+<td>Algoritmo Genético</td>
+<td>Poblacional evolutivo</td>
+<td>344.0890</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>0.0971</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">23</th>
+<td>ILS</td>
+<td>Trayectoria</td>
+<td>344.0890</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>0.1104</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">27</th>
+<td>VNS</td>
+<td>Búsqueda por vecindarios variables</td>
+<td>344.0890</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>1.7815</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">20</th>
+<td>Búsqueda local 2-opt</td>
+<td>Mejora local</td>
+<td>347.7039</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>1.0506</td>
+<td>0.0025</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">25</th>
+<td>Simulated Annealing</td>
+<td>Trayectoria probabilística</td>
+<td>353.7610</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>2.8109</td>
+<td>0.0150</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">22</th>
+<td>Greedy vecino más cercano</td>
+<td>Constructivo</td>
+<td>364.1710</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>5.8363</td>
+<td>0.0001</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">21</th>
+<td>GRASP</td>
+<td>Constructivo + mejora</td>
+<td>367.9583</td>
+<td>344.089</td>
+<td>Mejor referencia experimental</td>
+<td>6.9370</td>
+<td>0.0883</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_20, la mejor distancia registrada corresponde a Or-opt / 3-opt simplificado, con una distancia de 344.0890 y un error relativo de 0.0000%. La referencia utilizada para esta instancia es Mejor referencia experimental. En términos de rapidez, el menor tiempo promedio lo obtuvo Greedy vecino más cercano con 0.000078 segundos. El mayor error relativo se observa en GRASP, lo que permite distinguir entre una solución rápida y una solución de mejor calidad.</p>
+</div>
+</div>
+</section>
+<section id="distancia-y-error-relativo-en-tsp_20" class="level4">
+<h4 class="anchored" data-anchor-id="distancia-y-error-relativo-en-tsp_20">7.2.2 Distancia y error relativo en TSP_20</h4>
+<p>Después de revisar la tabla, los gráficos de distancia y error relativo permiten observar visualmente qué algoritmos se acercan más a la referencia de comparación y cuáles quedan más alejados.</p>
+<div id="bf0a7664" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/distancia_algoritmos_TSP_20.png" alt="Distancia por algoritmo en TSP_20" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/error_relativo_TSP_20.png" alt="Error relativo por algoritmo en TSP_20" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>Estos gráficos permiten observar la calidad de las soluciones en TSP_20. Los algoritmos con menor error relativo se ubican más cerca de la referencia; en esta instancia, destacan Algoritmo Genético, ILS, Or-opt / 3-opt simplificado, Tabu Search. Las barras de error muestran con claridad qué métodos quedan más alejados de la mejor distancia disponible para la comparación.</p>
+</div>
+</div>
+</section>
+<section id="tiempo-de-ejecución-en-tsp_20" class="level4">
+<h4 class="anchored" data-anchor-id="tiempo-de-ejecución-en-tsp_20">7.2.3 Tiempo de ejecución en TSP_20</h4>
+<p>El siguiente paso es revisar el costo computacional. Este gráfico muestra cuánto tarda cada algoritmo en promedio y ayuda a distinguir métodos rápidos de métodos más costosos.</p>
+<div id="3be1e375" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/tiempo_algoritmos_TSP_20.png" alt="Tiempo por algoritmo en TSP_20" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El gráfico de tiempo de TSP_20 muestra el costo computacional relativo de cada método. El algoritmo más rápido fue Greedy vecino más cercano, mientras que el mayor tiempo promedio correspondió a VNS. Esta diferencia es relevante porque una mejor distancia no siempre se obtiene con el menor costo computacional.</p>
+</div>
+</div>
+</section>
+<section id="ruta-ganadora-animada-de-tsp_20" class="level4">
+<h4 class="anchored" data-anchor-id="ruta-ganadora-animada-de-tsp_20">7.2.4 Ruta ganadora animada de TSP_20</h4>
+<p>Una vez identificada la mejor solución, el GIF permite observar el recorrido ciudad por ciudad. Esta visualización transforma la ruta ganadora en una secuencia interpretable y más útil para explicar el resultado.</p>
+<div id="486e91cf" class="cell" data-execution_count="14">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="gifs/animacion_ruta_ganadora_TSP_20.gif" alt="GIF ruta ganadora TSP_20" width="75%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El GIF muestra paso a paso la ruta ganadora de TSP_20. En esta instancia, el algoritmo ganador fue Or-opt / 3-opt simplificado, con distancia 344.0890. Esta visualización ayuda a explicar la solución como recorrido secuencial de ciudad en ciudad, en lugar de verla solo como una línea estática.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="instancia-tsp_50" class="level3">
+<h3 class="anchored" data-anchor-id="instancia-tsp_50">7.3 Instancia TSP_50</h3>
+<section id="tabla-comparativa-de-métricas-para-tsp_50" class="level4">
+<h4 class="anchored" data-anchor-id="tabla-comparativa-de-métricas-para-tsp_50">7.3.1 Tabla comparativa de métricas para TSP_50</h4>
+<p>La tabla siguiente resume el desempeño de cada algoritmo en esta instancia. Se comparan la distancia obtenida, la referencia usada, el error relativo, el tiempo promedio y la validez de la ruta.</p>
+<div id="2575ed39" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Tipo</th>
+<th data-quarto-table-cell-role="th">Mejor distancia</th>
+<th data-quarto-table-cell-role="th">Distancia de referencia</th>
+<th data-quarto-table-cell-role="th">Tipo de referencia</th>
+<th data-quarto-table-cell-role="th">Error relativo %</th>
+<th data-quarto-table-cell-role="th">Tiempo promedio</th>
+<th data-quarto-table-cell-role="th">Ruta válida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">36</th>
+<td>VNS</td>
+<td>Búsqueda por vecindarios variables</td>
+<td>630.5203</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>12.8827</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">32</th>
+<td>ILS</td>
+<td>Trayectoria</td>
+<td>639.2708</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>1.3878</td>
+<td>1.5070</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">33</th>
+<td>Or-opt / 3-opt simplificado</td>
+<td>Mejora local</td>
+<td>661.7210</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>4.9484</td>
+<td>0.3647</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">28</th>
+<td>Algoritmo Genético</td>
+<td>Poblacional evolutivo</td>
+<td>668.8435</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>6.0780</td>
+<td>0.2174</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">35</th>
+<td>Tabu Search</td>
+<td>Trayectoria con memoria</td>
+<td>680.4021</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>7.9112</td>
+<td>0.4164</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">29</th>
+<td>Búsqueda local 2-opt</td>
+<td>Mejora local</td>
+<td>704.6312</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>11.7539</td>
+<td>0.2102</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">31</th>
+<td>Greedy vecino más cercano</td>
+<td>Constructivo</td>
+<td>799.7697</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>26.8428</td>
+<td>0.0003</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">34</th>
+<td>Simulated Annealing</td>
+<td>Trayectoria probabilística</td>
+<td>799.7697</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>26.8428</td>
+<td>0.0330</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">30</th>
+<td>GRASP</td>
+<td>Constructivo + mejora</td>
+<td>1087.1294</td>
+<td>630.5203</td>
+<td>Mejor referencia experimental</td>
+<td>72.4178</td>
+<td>0.1587</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_50, la mejor distancia registrada corresponde a VNS, con una distancia de 630.5203 y un error relativo de 0.0000%. La referencia utilizada para esta instancia es Mejor referencia experimental. En términos de rapidez, el menor tiempo promedio lo obtuvo Greedy vecino más cercano con 0.000298 segundos. El mayor error relativo se observa en GRASP, lo que permite distinguir entre una solución rápida y una solución de mejor calidad.</p>
+</div>
+</div>
+</section>
+<section id="distancia-y-error-relativo-en-tsp_50" class="level4">
+<h4 class="anchored" data-anchor-id="distancia-y-error-relativo-en-tsp_50">7.3.2 Distancia y error relativo en TSP_50</h4>
+<p>Después de revisar la tabla, los gráficos de distancia y error relativo permiten observar visualmente qué algoritmos se acercan más a la referencia de comparación y cuáles quedan más alejados.</p>
+<div id="806c514a" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/distancia_algoritmos_TSP_50.png" alt="Distancia por algoritmo en TSP_50" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/error_relativo_TSP_50.png" alt="Error relativo por algoritmo en TSP_50" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>Estos gráficos permiten observar la calidad de las soluciones en TSP_50. Los algoritmos con menor error relativo se ubican más cerca de la referencia; en esta instancia, destacan VNS. Las barras de error muestran con claridad qué métodos quedan más alejados de la mejor distancia disponible para la comparación.</p>
+</div>
+</div>
+</section>
+<section id="tiempo-de-ejecución-en-tsp_50" class="level4">
+<h4 class="anchored" data-anchor-id="tiempo-de-ejecución-en-tsp_50">7.3.3 Tiempo de ejecución en TSP_50</h4>
+<p>El siguiente paso es revisar el costo computacional. Este gráfico muestra cuánto tarda cada algoritmo en promedio y ayuda a distinguir métodos rápidos de métodos más costosos.</p>
+<div id="98bd6e2e" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/tiempo_algoritmos_TSP_50.png" alt="Tiempo por algoritmo en TSP_50" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El gráfico de tiempo de TSP_50 muestra el costo computacional relativo de cada método. El algoritmo más rápido fue Greedy vecino más cercano, mientras que el mayor tiempo promedio correspondió a VNS. Esta diferencia es relevante porque una mejor distancia no siempre se obtiene con el menor costo computacional.</p>
+</div>
+</div>
+</section>
+<section id="ruta-ganadora-animada-de-tsp_50" class="level4">
+<h4 class="anchored" data-anchor-id="ruta-ganadora-animada-de-tsp_50">7.3.4 Ruta ganadora animada de TSP_50</h4>
+<p>Una vez identificada la mejor solución, el GIF permite observar el recorrido ciudad por ciudad. Esta visualización transforma la ruta ganadora en una secuencia interpretable y más útil para explicar el resultado.</p>
+<div id="98ec4a7f" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="gifs/animacion_ruta_ganadora_TSP_50.gif" alt="GIF ruta ganadora TSP_50" width="75%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El GIF muestra paso a paso la ruta ganadora de TSP_50. En esta instancia, el algoritmo ganador fue VNS, con distancia 630.5203. Esta visualización ayuda a explicar la solución como recorrido secuencial de ciudad en ciudad, en lugar de verla solo como una línea estática.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="instancia-tsp_100" class="level3">
+<h3 class="anchored" data-anchor-id="instancia-tsp_100">7.4 Instancia TSP_100</h3>
+<section id="tabla-comparativa-de-métricas-para-tsp_100" class="level4">
+<h4 class="anchored" data-anchor-id="tabla-comparativa-de-métricas-para-tsp_100">7.4.1 Tabla comparativa de métricas para TSP_100</h4>
+<p>La tabla siguiente resume el desempeño de cada algoritmo en esta instancia. Se comparan la distancia obtenida, la referencia usada, el error relativo, el tiempo promedio y la validez de la ruta.</p>
+<div id="ac9a7bfb" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Tipo</th>
+<th data-quarto-table-cell-role="th">Mejor distancia</th>
+<th data-quarto-table-cell-role="th">Distancia de referencia</th>
+<th data-quarto-table-cell-role="th">Tipo de referencia</th>
+<th data-quarto-table-cell-role="th">Error relativo %</th>
+<th data-quarto-table-cell-role="th">Tiempo promedio</th>
+<th data-quarto-table-cell-role="th">Ruta válida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>VNS</td>
+<td>Búsqueda por vecindarios variables</td>
+<td>802.6989</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>0.0000</td>
+<td>41.4571</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">10</th>
+<td>Algoritmo Genético</td>
+<td>Poblacional evolutivo</td>
+<td>840.3529</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>4.6909</td>
+<td>0.5584</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>ILS</td>
+<td>Trayectoria</td>
+<td>841.3502</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>4.8152</td>
+<td>4.8603</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>Or-opt / 3-opt simplificado</td>
+<td>Mejora local</td>
+<td>851.6950</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>6.1039</td>
+<td>1.3949</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">17</th>
+<td>Tabu Search</td>
+<td>Trayectoria con memoria</td>
+<td>858.6335</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>6.9683</td>
+<td>1.1220</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>Búsqueda local 2-opt</td>
+<td>Mejora local</td>
+<td>895.8587</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>11.6058</td>
+<td>0.3264</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">13</th>
+<td>Greedy vecino más cercano</td>
+<td>Constructivo</td>
+<td>956.9990</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>19.2227</td>
+<td>0.0012</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">16</th>
+<td>Simulated Annealing</td>
+<td>Trayectoria probabilística</td>
+<td>956.9990</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>19.2227</td>
+<td>0.0487</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>GRASP</td>
+<td>Constructivo + mejora</td>
+<td>2134.0050</td>
+<td>802.6989</td>
+<td>Mejor referencia experimental</td>
+<td>165.8537</td>
+<td>0.1393</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_100, la mejor distancia registrada corresponde a VNS, con una distancia de 802.6989 y un error relativo de 0.0000%. La referencia utilizada para esta instancia es Mejor referencia experimental. En términos de rapidez, el menor tiempo promedio lo obtuvo Greedy vecino más cercano con 0.001172 segundos. El mayor error relativo se observa en GRASP, lo que permite distinguir entre una solución rápida y una solución de mejor calidad.</p>
+</div>
+</div>
+</section>
+<section id="distancia-y-error-relativo-en-tsp_100" class="level4">
+<h4 class="anchored" data-anchor-id="distancia-y-error-relativo-en-tsp_100">7.4.2 Distancia y error relativo en TSP_100</h4>
+<p>Después de revisar la tabla, los gráficos de distancia y error relativo permiten observar visualmente qué algoritmos se acercan más a la referencia de comparación y cuáles quedan más alejados.</p>
+<div id="a7b42ef4" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/distancia_algoritmos_TSP_100.png" alt="Distancia por algoritmo en TSP_100" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/error_relativo_TSP_100.png" alt="Error relativo por algoritmo en TSP_100" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>Estos gráficos permiten observar la calidad de las soluciones en TSP_100. Los algoritmos con menor error relativo se ubican más cerca de la referencia; en esta instancia, destacan VNS. Las barras de error muestran con claridad qué métodos quedan más alejados de la mejor distancia disponible para la comparación.</p>
+</div>
+</div>
+</section>
+<section id="tiempo-de-ejecución-en-tsp_100" class="level4">
+<h4 class="anchored" data-anchor-id="tiempo-de-ejecución-en-tsp_100">7.4.3 Tiempo de ejecución en TSP_100</h4>
+<p>El siguiente paso es revisar el costo computacional. Este gráfico muestra cuánto tarda cada algoritmo en promedio y ayuda a distinguir métodos rápidos de métodos más costosos.</p>
+<div id="018ef3eb" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/tiempo_algoritmos_TSP_100.png" alt="Tiempo por algoritmo en TSP_100" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El gráfico de tiempo de TSP_100 muestra el costo computacional relativo de cada método. El algoritmo más rápido fue Greedy vecino más cercano, mientras que el mayor tiempo promedio correspondió a VNS. Esta diferencia es relevante porque una mejor distancia no siempre se obtiene con el menor costo computacional.</p>
+</div>
+</div>
+</section>
+<section id="ruta-ganadora-animada-de-tsp_100" class="level4">
+<h4 class="anchored" data-anchor-id="ruta-ganadora-animada-de-tsp_100">7.4.4 Ruta ganadora animada de TSP_100</h4>
+<p>Una vez identificada la mejor solución, el GIF permite observar el recorrido ciudad por ciudad. Esta visualización transforma la ruta ganadora en una secuencia interpretable y más útil para explicar el resultado.</p>
+<div id="205060d2" class="cell" data-execution_count="22">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="gifs/animacion_ruta_ganadora_TSP_100.gif" alt="GIF ruta ganadora TSP_100" width="75%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El GIF muestra paso a paso la ruta ganadora de TSP_100. En esta instancia, el algoritmo ganador fue VNS, con distancia 802.6989. Esta visualización ayuda a explicar la solución como recorrido secuencial de ciudad en ciudad, en lugar de verla solo como una línea estática.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="síntesis-global-relación-entre-calidad-y-costo-computacional" class="level3">
+<h3 class="anchored" data-anchor-id="síntesis-global-relación-entre-calidad-y-costo-computacional">7.5 Síntesis global: relación entre calidad y costo computacional</h3>
+<p>Luego de revisar cada instancia por separado, resulta útil observar todos los algoritmos en un mismo plano de comparación. Este gráfico interactivo resume la relación entre error relativo y tiempo promedio considerando las cuatro instancias. Los colores distinguen la instancia, y al pasar el cursor sobre cada punto se despliega la información detallada del algoritmo.</p>
+<div id="3a94b175" class="cell" data-execution_count="23">
+<div class="cell-output cell-output-display">
+
+<div style="max-width: 1050px; margin: 1.2rem auto;">
+<svg viewbox="0 0 980 560" width="100%" role="img" aria-label="Tiempo versus calidad de solución">
+  <style>
+    .axis { stroke: #2f3e46; stroke-width: 1.4; }
+    .grid { stroke: #d9e1e5; stroke-width: 1; }
+    .tick { fill: #2f3e46; font-size: 13px; font-family: Segoe UI, system-ui, sans-serif; }
+    .title { fill: #2f3e46; font-size: 21px; font-weight: 600; text-anchor: middle; font-family: Segoe UI, system-ui, sans-serif; }
+    .label { fill: #2f3e46; font-size: 15px; text-anchor: middle; font-family: Segoe UI, system-ui, sans-serif; }
+    .point { stroke: #2f3e46; stroke-width: 1.1; opacity: 0.9; cursor: pointer; transition: opacity .15s ease, r .15s ease; }
+    .point:hover { opacity: 1; r: 8; }
+    .legend { fill: #2f3e46; font-size: 13px; font-family: Segoe UI, system-ui, sans-serif; }
+  </style>
+  <rect x="0" y="0" width="980" height="560" fill="#ffffff"></rect>
+  <text x="490.0" y="30" class="title">Tiempo versus calidad de solución</text>
+<line x1="-3.62" y1="58" x2="-3.62" y2="482" class="grid"></line><text x="-3.62" y="507" class="tick" text-anchor="middle">10^-6</text><line x1="112.40" y1="58" x2="112.40" y2="482" class="grid"></line><text x="112.40" y="507" class="tick" text-anchor="middle">10^-5</text><line x1="228.43" y1="58" x2="228.43" y2="482" class="grid"></line><text x="228.43" y="507" class="tick" text-anchor="middle">10^-4</text><line x1="344.46" y1="58" x2="344.46" y2="482" class="grid"></line><text x="344.46" y="507" class="tick" text-anchor="middle">10^-3</text><line x1="460.49" y1="58" x2="460.49" y2="482" class="grid"></line><text x="460.49" y="507" class="tick" text-anchor="middle">10^-2</text><line x1="576.51" y1="58" x2="576.51" y2="482" class="grid"></line><text x="576.51" y="507" class="tick" text-anchor="middle">10^-1</text><line x1="692.54" y1="58" x2="692.54" y2="482" class="grid"></line><text x="692.54" y="507" class="tick" text-anchor="middle">10^0</text><line x1="808.57" y1="58" x2="808.57" y2="482" class="grid"></line><text x="808.57" y="507" class="tick" text-anchor="middle">10^1</text><line x1="924.60" y1="58" x2="924.60" y2="482" class="grid"></line><text x="924.60" y="507" class="tick" text-anchor="middle">10^2</text><line x1="1040.62" y1="58" x2="1040.62" y2="482" class="grid"></line><text x="1040.62" y="507" class="tick" text-anchor="middle">10^3</text><line x1="95" y1="482.00" x2="942" y2="482.00" class="grid"></line><text x="83" y="486.00" class="tick" text-anchor="end">0</text><line x1="95" y1="421.43" x2="942" y2="421.43" class="grid"></line><text x="83" y="425.43" class="tick" text-anchor="end">25</text><line x1="95" y1="360.86" x2="942" y2="360.86" class="grid"></line><text x="83" y="364.86" class="tick" text-anchor="end">50</text><line x1="95" y1="300.29" x2="942" y2="300.29" class="grid"></line><text x="83" y="304.29" class="tick" text-anchor="end">75</text><line x1="95" y1="239.71" x2="942" y2="239.71" class="grid"></line><text x="83" y="243.71" class="tick" text-anchor="end">100</text><line x1="95" y1="179.14" x2="942" y2="179.14" class="grid"></line><text x="83" y="183.14" class="tick" text-anchor="end">125</text><line x1="95" y1="118.57" x2="942" y2="118.57" class="grid"></line><text x="83" y="122.57" class="tick" text-anchor="end">150</text><line x1="95" y1="58.00" x2="942" y2="58.00" class="grid"></line><text x="83" y="62.00" class="tick" text-anchor="end">175</text><line x1="95" y1="482" x2="942" y2="482" class="axis"></line><line x1="95" y1="58" x2="95" y2="482" class="axis"></line><text x="518.5" y="538" class="label">Tiempo promedio (s, escala log)</text><text x="22" y="270.0" class="label" transform="rotate(-90 22 270.0)">Error relativo %</text><circle cx="573.16" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Algoritmo Genético
+Tipo: Poblacional evolutivo
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.093554 s</title></circle><circle cx="294.74" cy="458.96" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Búsqueda local 2-opt
+Tipo: Mejora local
+Mejor distancia: 305.8516
+Distancia de referencia: 279.2895
+Error relativo: 9.5106%
+Tiempo promedio: 0.000373 s</title></circle><circle cx="715.99" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Fuerza bruta exacta
+Tipo: Exacto
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 1.592623 s</title></circle><circle cx="476.08" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: GRASP
+Tipo: Constructivo + mejora
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.013626 s</title></circle><circle cx="169.90" cy="410.63" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Greedy vecino más cercano
+Tipo: Constructivo
+Mejor distancia: 361.5642
+Distancia de referencia: 279.2895
+Error relativo: 29.4586%
+Tiempo promedio: 0.000031 s</title></circle><circle cx="466.89" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: ILS
+Tipo: Trayectoria
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.011355 s</title></circle><circle cx="366.16" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Or-opt / 3-opt simplificado
+Tipo: Mejora local
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.001538 s</title></circle><circle cx="459.93" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Simulated Annealing
+Tipo: Trayectoria probabilística
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.009891 s</title></circle><circle cx="530.58" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: Tabu Search
+Tipo: Trayectoria con memoria
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.040193 s</title></circle><circle cx="617.33" cy="482.00" r="6" fill="#4977a1" class="point"><title>Instancia: TSP_10
+Algoritmo: VNS
+Tipo: Búsqueda por vecindarios variables
+Mejor distancia: 279.2895
+Distancia de referencia: 279.2895
+Error relativo: 0.0000%
+Tiempo promedio: 0.224795 s</title></circle><circle cx="663.18" cy="470.63" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Algoritmo Genético
+Tipo: Poblacional evolutivo
+Mejor distancia: 840.3529
+Distancia de referencia: 802.6989
+Error relativo: 4.6909%
+Tiempo promedio: 0.558375 s</title></circle><circle cx="636.13" cy="453.88" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Búsqueda local 2-opt
+Tipo: Mejora local
+Mejor distancia: 895.8587
+Distancia de referencia: 802.6989
+Error relativo: 11.6058%
+Tiempo promedio: 0.326440 s</title></circle><circle cx="593.22" cy="80.16" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: GRASP
+Tipo: Constructivo + mejora
+Mejor distancia: 2134.0050
+Distancia de referencia: 802.6989
+Error relativo: 165.8537%
+Tiempo promedio: 0.139306 s</title></circle><circle cx="352.47" cy="435.43" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Greedy vecino más cercano
+Tipo: Constructivo
+Mejor distancia: 956.9990
+Distancia de referencia: 802.6989
+Error relativo: 19.2227%
+Tiempo promedio: 0.001172 s</title></circle><circle cx="772.21" cy="470.33" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: ILS
+Tipo: Trayectoria
+Mejor distancia: 841.3502
+Distancia de referencia: 802.6989
+Error relativo: 4.8152%
+Tiempo promedio: 4.860334 s</title></circle><circle cx="709.31" cy="467.21" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Or-opt / 3-opt simplificado
+Tipo: Mejora local
+Mejor distancia: 851.6950
+Distancia de referencia: 802.6989
+Error relativo: 6.1039%
+Tiempo promedio: 1.394867 s</title></circle><circle cx="540.23" cy="435.43" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Simulated Annealing
+Tipo: Trayectoria probabilística
+Mejor distancia: 956.9990
+Distancia de referencia: 802.6989
+Error relativo: 19.2227%
+Tiempo promedio: 0.048677 s</title></circle><circle cx="698.34" cy="465.12" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: Tabu Search
+Tipo: Trayectoria con memoria
+Mejor distancia: 858.6335
+Distancia de referencia: 802.6989
+Error relativo: 6.9683%
+Tiempo promedio: 1.122012 s</title></circle><circle cx="880.23" cy="482.00" r="6" fill="#c9a227" class="point"><title>Instancia: TSP_100
+Algoritmo: VNS
+Tipo: Búsqueda por vecindarios variables
+Mejor distancia: 802.6989
+Distancia de referencia: 802.6989
+Error relativo: 0.0000%
+Tiempo promedio: 41.457097 s</title></circle><circle cx="575.04" cy="482.00" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Algoritmo Genético
+Tipo: Poblacional evolutivo
+Mejor distancia: 344.0890
+Distancia de referencia: 344.0890
+Error relativo: 0.0000%
+Tiempo promedio: 0.097116 s</title></circle><circle cx="391.40" cy="479.45" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Búsqueda local 2-opt
+Tipo: Mejora local
+Mejor distancia: 347.7039
+Distancia de referencia: 344.0890
+Error relativo: 1.0506%
+Tiempo promedio: 0.002538 s</title></circle><circle cx="570.23" cy="465.19" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: GRASP
+Tipo: Constructivo + mejora
+Mejor distancia: 367.9583
+Distancia de referencia: 344.0890
+Error relativo: 6.9370%
+Tiempo promedio: 0.088283 s</title></circle><circle cx="216.10" cy="467.86" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Greedy vecino más cercano
+Tipo: Constructivo
+Mejor distancia: 364.1710
+Distancia de referencia: 344.0890
+Error relativo: 5.8363%
+Tiempo promedio: 0.000078 s</title></circle><circle cx="581.50" cy="482.00" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: ILS
+Tipo: Trayectoria
+Mejor distancia: 344.0890
+Distancia de referencia: 344.0890
+Error relativo: 0.0000%
+Tiempo promedio: 0.110404 s</title></circle><circle cx="469.89" cy="482.00" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Or-opt / 3-opt simplificado
+Tipo: Mejora local
+Mejor distancia: 344.0890
+Distancia de referencia: 344.0890
+Error relativo: 0.0000%
+Tiempo promedio: 0.012052 s</title></circle><circle cx="480.98" cy="475.19" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Simulated Annealing
+Tipo: Trayectoria probabilística
+Mejor distancia: 353.7610
+Distancia de referencia: 344.0890
+Error relativo: 2.8109%
+Tiempo promedio: 0.015019 s</title></circle><circle cx="548.75" cy="482.00" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: Tabu Search
+Tipo: Trayectoria con memoria
+Mejor distancia: 344.0890
+Distancia de referencia: 344.0890
+Error relativo: 0.0000%
+Tiempo promedio: 0.057644 s</title></circle><circle cx="721.64" cy="482.00" r="6" fill="#2a9d8f" class="point"><title>Instancia: TSP_20
+Algoritmo: VNS
+Tipo: Búsqueda por vecindarios variables
+Mejor distancia: 344.0890
+Distancia de referencia: 344.0890
+Error relativo: 0.0000%
+Tiempo promedio: 1.781527 s</title></circle><circle cx="615.65" cy="467.27" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Algoritmo Genético
+Tipo: Poblacional evolutivo
+Mejor distancia: 668.8435
+Distancia de referencia: 630.5203
+Error relativo: 6.0780%
+Tiempo promedio: 0.217420 s</title></circle><circle cx="613.96" cy="453.52" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Búsqueda local 2-opt
+Tipo: Mejora local
+Mejor distancia: 704.6312
+Distancia de referencia: 630.5203
+Error relativo: 11.7539%
+Tiempo promedio: 0.210233 s</title></circle><circle cx="599.80" cy="306.54" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: GRASP
+Tipo: Constructivo + mejora
+Mejor distancia: 1087.1294
+Distancia de referencia: 630.5203
+Error relativo: 72.4178%
+Tiempo promedio: 0.158747 s</title></circle><circle cx="283.54" cy="416.96" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Greedy vecino más cercano
+Tipo: Constructivo
+Mejor distancia: 799.7697
+Distancia de referencia: 630.5203
+Error relativo: 26.8428%
+Tiempo promedio: 0.000298 s</title></circle><circle cx="713.21" cy="478.64" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: ILS
+Tipo: Trayectoria
+Mejor distancia: 639.2708
+Distancia de referencia: 630.5203
+Error relativo: 1.3878%
+Tiempo promedio: 1.507019 s</title></circle><circle cx="641.72" cy="470.01" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Or-opt / 3-opt simplificado
+Tipo: Mejora local
+Mejor distancia: 661.7210
+Distancia de referencia: 630.5203
+Error relativo: 4.9484%
+Tiempo promedio: 0.364728 s</title></circle><circle cx="520.67" cy="416.96" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Simulated Annealing
+Tipo: Trayectoria probabilística
+Mejor distancia: 799.7697
+Distancia de referencia: 630.5203
+Error relativo: 26.8428%
+Tiempo promedio: 0.033012 s</title></circle><circle cx="648.39" cy="462.83" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: Tabu Search
+Tipo: Trayectoria con memoria
+Mejor distancia: 680.4021
+Distancia de referencia: 630.5203
+Error relativo: 7.9112%
+Tiempo promedio: 0.416395 s</title></circle><circle cx="821.33" cy="482.00" r="6" fill="#d86f45" class="point"><title>Instancia: TSP_50
+Algoritmo: VNS
+Tipo: Búsqueda por vecindarios variables
+Mejor distancia: 630.5203
+Distancia de referencia: 630.5203
+Error relativo: 0.0000%
+Tiempo promedio: 12.882749 s</title></circle><rect x="801" y="49" width="150" height="130" fill="#ffffff" stroke="#d9e1e5" rx="4"></rect><circle cx="815" cy="73" r="6" fill="#4977a1" stroke="#2f3e46" stroke-width="1"></circle><text x="831" y="78" class="legend">TSP_10</text><circle cx="815" cy="97" r="6" fill="#2a9d8f" stroke="#2f3e46" stroke-width="1"></circle><text x="831" y="102" class="legend">TSP_20</text><circle cx="815" cy="121" r="6" fill="#d86f45" stroke="#2f3e46" stroke-width="1"></circle><text x="831" y="126" class="legend">TSP_50</text><circle cx="815" cy="145" r="6" fill="#c9a227" stroke="#2f3e46" stroke-width="1"></circle><text x="831" y="150" class="legend">TSP_100</text></svg><p style="text-align:center; color:#506675; font-size:0.92rem;">Pase el cursor sobre cada punto para ver algoritmo, instancia, distancia, error, tiempo y referencia.</p></div>
+</div>
+</div>
+<p>Esta lectura global permite identificar visualmente qué métodos se ubican cerca de error cero y, al mismo tiempo, cuáles requieren menor tiempo. Por eso funciona como puente entre el análisis individual de cada instancia y la revisión posterior de convergencia y ranking general.</p>
+</section>
+<section id="comparación-global-y-convergencia-de-metaheurísticas" class="level3">
+<h3 class="anchored" data-anchor-id="comparación-global-y-convergencia-de-metaheurísticas">7.6 Comparación global y convergencia de metaheurísticas</h3>
+<p>Después del análisis por instancia, se revisa el comportamiento global de las metaheurísticas. Las curvas de convergencia permiten observar cómo mejora la mejor distancia durante la ejecución y en qué momento los algoritmos tienden a estabilizarse.</p>
+<div id="532f04eb" class="cell" data-execution_count="24">
+<section id="convergencia-en-tsp_10" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="convergencia-en-tsp_10">Convergencia en TSP_10</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/convergencia_TSP_10.png" alt="Convergencia de metaheurísticas en TSP_10" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En la instancia TSP_10 se observa que la mayoría de las metaheurísticas logra estabilizarse rápidamente en valores cercanos a la mejor distancia encontrada. Esto es esperable, ya que el tamaño reducido de la instancia permite explorar el espacio de búsqueda con mayor facilidad. VNS e ILS muestran una convergencia temprana hacia soluciones de alta calidad, mientras que el Algoritmo Genético también reduce su distancia durante las primeras iteraciones hasta estabilizarse. Simulated Annealing presenta una trayectoria más gradual, con mejoras tardías antes de alcanzar una distancia competitiva. En esta instancia, las diferencias entre algoritmos tienden a reducirse debido a la baja dimensionalidad del problema.</p>
+</div>
+<section id="convergencia-en-tsp_20" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="convergencia-en-tsp_20">Convergencia en TSP_20</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/convergencia_TSP_20.png" alt="Convergencia de metaheurísticas en TSP_20" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_20 comienza a evidenciarse con mayor claridad el efecto del aumento dimensional. Las curvas muestran que algunos algoritmos alcanzan rápidamente una zona de estabilización, mientras que otros requieren más iteraciones para mejorar la ruta inicial. VNS, ILS y el Algoritmo Genético presentan un comportamiento competitivo, con descensos tempranos y posterior estabilización. GRASP muestra una mejora inicial marcada, aunque su convergencia se estabiliza en una distancia mayor respecto de los métodos más competitivos. Esto sugiere que, a medida que el número de ciudades aumenta, la estrategia de búsqueda y la capacidad de escapar de óptimos locales se vuelven más relevantes.</p>
+</div>
+<section id="convergencia-en-tsp_50" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="convergencia-en-tsp_50">Convergencia en TSP_50</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/convergencia_TSP_50.png" alt="Convergencia de metaheurísticas en TSP_50" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En la instancia TSP_50 se aprecia una diferencia más marcada entre las estrategias evaluadas. VNS e ILS mantienen un comportamiento eficiente, alcanzando rápidamente soluciones de menor distancia y estabilizándose en valores competitivos. El Algoritmo Genético muestra una mejora progresiva más lenta, lo que refleja su naturaleza poblacional: requiere más iteraciones para combinar y refinar soluciones. Simulated Annealing se mantiene prácticamente estable durante gran parte de la ejecución, lo que indica una menor capacidad de mejora bajo la configuración utilizada. GRASP presenta mejoras iniciales, pero permanece alejado de las mejores distancias observadas en esta instancia. En conjunto, el gráfico evidencia que el aumento del tamaño del problema amplifica las diferencias entre algoritmos.</p>
+</div>
+<section id="convergencia-en-tsp_100" class="level4 cell-output cell-output-display cell-output-markdown">
+<h4 class="anchored" data-anchor-id="convergencia-en-tsp_100">Convergencia en TSP_100</h4>
+</section>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/convergencia_TSP_100.png" alt="Convergencia de metaheurísticas en TSP_100" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En TSP_100 el comportamiento de convergencia refleja de forma más clara la dificultad del problema. Las curvas muestran que no todos los algoritmos logran mejorar de manera significativa durante la ejecución. VNS e ILS mantienen una ventaja relativa al alcanzar distancias menores en comparación con otras metaheurísticas. El Algoritmo Genético presenta una mejora progresiva, aunque más lenta, lo que es coherente con su enfoque basado en población y evolución iterativa. Simulated Annealing y GRASP tienden a estabilizarse en valores superiores, lo que sugiere que, bajo los parámetros utilizados, tuvieron menor capacidad para refinar soluciones en una instancia de mayor tamaño. Este resultado refuerza la importancia de analizar no solo la distancia final, sino también la velocidad de convergencia y la estabilidad de cada método.</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En términos generales, las curvas de convergencia permiten observar que el desempeño de las metaheurísticas no depende únicamente de la distancia final obtenida, sino también de la velocidad con que alcanzan soluciones competitivas y de su capacidad para continuar mejorando a medida que avanza la ejecución. En instancias pequeñas, varios métodos logran resultados similares; sin embargo, al aumentar el número de ciudades, las diferencias entre estrategias se vuelven más evidentes. Los métodos basados en búsqueda local iterada o cambio de vecindarios tienden a mostrar una convergencia más rápida y estable, mientras que los métodos poblacionales pueden requerir más iteraciones para expresar su capacidad de mejora. Por esta razón, la comparación entre metaheurísticas debe considerar simultáneamente calidad de solución, tiempo de ejecución y comportamiento de convergencia.</p>
+</div>
+</div>
+</section>
+<section id="ranking-general-de-algoritmos" class="level3">
+<h3 class="anchored" data-anchor-id="ranking-general-de-algoritmos">7.7 Ranking general de algoritmos</h3>
+<p>El ranking promedio resume el rendimiento general de los algoritmos, mientras que el boxplot permite observar la variabilidad de los métodos estocásticos. Esta lectura global complementa el análisis por instancia.</p>
+<div id="205b8b72" class="cell" data-execution_count="25">
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/ranking_promedio_algoritmos.png" alt="Ranking promedio de algoritmos" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En el gráfico de ranking promedio se observa una comparación global del desempeño relativo de los algoritmos, donde valores menores indican mejores posiciones promedio. En este caso, la fuerza bruta exacta aparece con el mejor ranking, pero su interpretación debe realizarse con cautela, ya que fue utilizada únicamente en la instancia pequeña TSP_10 como referencia exacta y no como método escalable para todas las instancias. Entre las metaheurísticas, VNS e ILS destacan por ubicarse en las mejores posiciones promedio, lo que sugiere un comportamiento competitivo y estable frente al aumento del tamaño del problema. El Algoritmo Genético y Or-opt / 3-opt simplificado también presentan un rendimiento favorable, aunque ligeramente por debajo de las mejores estrategias de búsqueda local avanzada. En contraste, Greedy vecino más cercano y GRASP aparecen en posiciones menos favorables dentro del ranking, lo que indica que, si bien pueden generar soluciones válidas, su desempeño relativo fue menor frente a métodos con mayor capacidad de refinamiento o exploración del espacio de búsqueda.</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p align="center">
+<img src="graficos/boxplot_estocasticos.png" alt="Boxplot de métodos estocásticos" width="85%">
+</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>El boxplot de métodos estocásticos permite observar la variabilidad de las distancias obtenidas por algoritmos que incorporan componentes aleatorios o procesos iterativos dependientes de la configuración inicial. En términos generales, métodos como ILS, Tabu Search y VNS presentan distribuciones más compactas, lo que sugiere mayor estabilidad en las soluciones obtenidas. El Algoritmo Genético muestra una variabilidad moderada, coherente con su naturaleza poblacional, donde la calidad final depende de la evolución de la población, la selección, el cruce y la mutación. GRASP presenta una dispersión más amplia, lo que indica mayor sensibilidad a la etapa constructiva aleatorizada y a la calidad de las soluciones iniciales generadas. Simulated Annealing también muestra variabilidad, aunque con una tendencia a estabilizarse en rangos intermedios. Este análisis refuerza que no basta con observar la mejor distancia alcanzada, sino que también es importante evaluar la consistencia del algoritmo entre ejecuciones o instancias.</p>
+</div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<p>En conjunto, el ranking promedio y el boxplot complementan el análisis por instancia, ya que permiten observar tanto el desempeño relativo general como la estabilidad de los algoritmos evaluados. Los resultados sugieren que las estrategias basadas en búsqueda local avanzada y cambio de vecindarios, como VNS e ILS, lograron un mejor equilibrio entre calidad y consistencia. Por otro lado, los métodos más simples o altamente dependientes de la construcción inicial pueden ser rápidos, pero tienden a quedar en posiciones menos favorables cuando se evalúa la calidad global de las rutas. Esta comparación confirma la importancia de analizar simultáneamente distancia obtenida, variabilidad, tiempo de ejecución y comportamiento de convergencia.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="discusión" class="level2">
+<h2 class="anchored" data-anchor-id="discusión">8. Discusión</h2>
+<p>Los resultados obtenidos permiten observar que el rendimiento de los algoritmos aplicados al Problema del Viajero no puede evaluarse únicamente a partir de la distancia final de la ruta. Si bien la distancia total es la medida principal de calidad, el tiempo de ejecución, la estabilidad de los resultados y la capacidad de mejora durante la ejecución también son aspectos relevantes para comparar los métodos de manera justa.</p>
+<p>En primer lugar, la fuerza bruta cumple un rol metodológico importante, ya que permite obtener una referencia exacta en la instancia <code>TSP_10</code>. Sin embargo, su utilidad queda limitada a instancias pequeñas, debido al crecimiento factorial del número de rutas posibles. Esta limitación justifica el uso de heurísticas, búsquedas locales y metaheurísticas en instancias de mayor tamaño. En <code>TSP_20</code>, <code>TSP_50</code> y <code>TSP_100</code>, la comparación se realiza respecto de la mejor referencia experimental encontrada, lo cual permite evaluar el desempeño relativo de los algoritmos, pero no implica demostrar optimalidad global.</p>
+<p>Greedy vecino más cercano funciona como una línea base útil por su rapidez y simplicidad. No obstante, al tomar decisiones locales sin reconsiderar elecciones anteriores, puede quedar lejos de rutas más competitivas cuando aumenta el número de ciudades. Esta característica permite entender por qué los métodos de mejora posterior, como 2-opt, Or-opt / 3-opt simplificado, ILS o VNS, tienden a obtener mejores resultados: no se limitan a construir una ruta inicial, sino que buscan corregirla mediante movimientos sobre la estructura de la solución.</p>
+<p>Las metaheurísticas evaluadas presentan distintas estrategias para equilibrar exploración y explotación. ILS combina búsqueda local con perturbaciones, VNS modifica sistemáticamente el vecindario de búsqueda, Tabu Search utiliza memoria para evitar ciclos y Simulated Annealing acepta ocasionalmente soluciones peores para escapar de óptimos locales. Estas estrategias explican por qué, en general, los métodos más elaborados pueden obtener rutas de mejor calidad que una heurística constructiva simple, aunque normalmente requieran mayor tiempo de ejecución.</p>
+<p>El Algoritmo Genético representa la componente evolutiva del proyecto. A diferencia de las búsquedas de trayectoria única, trabaja con una población de soluciones candidatas y aplica operadores de selección, cruce, mutación y reemplazo. Esta lógica permite mantener diversidad y combinar características de diferentes rutas. Sin embargo, su desempeño depende fuertemente de la configuración de parámetros, del tamaño de población, de los operadores genéticos utilizados y del número de generaciones. Por esta razón, puede presentar mejoras progresivas, pero no necesariamente dominar en todos los escenarios.</p>
+<p>Las curvas de convergencia aportan una lectura adicional al análisis, ya que muestran cómo evoluciona la mejor distancia encontrada durante la ejecución. En instancias pequeñas, varios algoritmos tienden a estabilizarse rápidamente; en cambio, al aumentar el número de ciudades, las diferencias de comportamiento se vuelven más visibles. Algunos métodos alcanzan rápidamente soluciones competitivas, mientras que otros requieren más iteraciones o se estabilizan en valores menos favorables. Esto confirma que la velocidad de convergencia también debe considerarse dentro de la comparación.</p>
+<p>Finalmente, el ranking general y el boxplot complementan el análisis por instancia. El ranking permite observar el desempeño relativo promedio de los algoritmos, mientras que el boxplot muestra la variabilidad de los métodos estocásticos. En conjunto, estos resultados refuerzan la idea de que no existe un único algoritmo universalmente superior para todas las condiciones. La elección del método depende del tamaño de la instancia, del tiempo disponible, de la calidad requerida y de la estabilidad esperada en las soluciones.</p>
+</section>
+<section id="conclusiones-y-recomendaciones" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones-y-recomendaciones">9. Conclusiones y recomendaciones</h2>
+<section id="conclusiones" class="level3">
+<h3 class="anchored" data-anchor-id="conclusiones">9.1 Conclusiones</h3>
+<p>El desarrollo del proyecto permitió analizar el Problema del Viajero desde una perspectiva computacional y experimental, comparando métodos exactos, heurísticos y metaheurísticos sobre instancias de diferente tamaño. Los resultados evidencian que el TSP presenta un crecimiento combinatorio significativo, lo que limita el uso de métodos exactos como fuerza bruta a instancias pequeñas. En este estudio, fuerza bruta fue útil para obtener una referencia exacta en <code>TSP_10</code>, pero no resulta viable para instancias de mayor dimensionalidad.</p>
+<p>La comparación entre algoritmos muestra que las heurísticas simples, como Greedy vecino más cercano, permiten generar soluciones válidas en tiempos muy bajos, pero su desempeño puede verse limitado por decisiones locales. En cambio, los métodos de mejora local y metaheurísticas incorporan mecanismos que permiten refinar rutas iniciales, explorar vecindarios alternativos y escapar de óptimos locales, obteniendo soluciones más competitivas frente a la referencia experimental.</p>
+<p>Asimismo, el proyecto permitió observar que el desempeño de un algoritmo no debe evaluarse únicamente por la distancia final obtenida. El tiempo de ejecución, el error relativo, la estabilidad de los resultados y el comportamiento de convergencia son factores igualmente importantes para comprender el rendimiento real de cada método. En este sentido, la comparación global permitió identificar compromisos entre calidad de solución y costo computacional.</p>
+<p>El Algoritmo Genético permitió incorporar explícitamente el enfoque de computación evolutiva dentro del proyecto. Su uso mostró la importancia de representar adecuadamente las soluciones como permutaciones válidas y de utilizar operadores que preserven la factibilidad de las rutas. Aunque su comportamiento puede depender de la configuración de parámetros, representa una estrategia relevante al trabajar con poblaciones, diversidad y evolución iterativa de soluciones.</p>
+<p>En síntesis, los resultados respaldan la utilidad de las metaheurísticas para abordar problemas de optimización combinatoria donde la búsqueda exacta deja de ser práctica. Para el caso del TSP, los métodos basados en búsqueda local avanzada, perturbaciones, memoria, cambio de vecindarios o población permiten obtener soluciones de buena calidad en tiempos computacionalmente razonables, especialmente en instancias donde no es posible garantizar el óptimo global.</p>
+</section>
+<section id="recomendaciones-y-trabajo-futuro" class="level3">
+<h3 class="anchored" data-anchor-id="recomendaciones-y-trabajo-futuro">9.2 Recomendaciones y trabajo futuro</h3>
+<p>Como trabajo futuro, se recomienda realizar múltiples ejecuciones independientes para los algoritmos estocásticos, utilizando distintas semillas aleatorias, con el fin de evaluar con mayor robustez la estabilidad de los resultados. También sería conveniente ajustar sistemáticamente los hiperparámetros de cada metaheurística, especialmente en métodos como Algoritmo Genético, Simulated Annealing, Tabu Search, GRASP y VNS.</p>
+<p>Otra línea de mejora consiste en comparar las soluciones obtenidas con instancias benchmark del TSP que cuenten con valores óptimos o mejores conocidos. Esto permitiría calcular errores relativos frente a referencias externas más robustas, especialmente en instancias de mayor tamaño.</p>
+<p>Finalmente, se recomienda ampliar el análisis incorporando métricas adicionales, como número de evaluaciones de función objetivo, sensibilidad a parámetros y comparación estadística entre algoritmos. Estas extensiones permitirían fortalecer la evaluación experimental y entregar conclusiones más generales sobre el comportamiento de las metaheurísticas aplicadas al TSP.</p>
+</section>
+</section>
+<section id="anexos" class="level2">
+<h2 class="anchored" data-anchor-id="anexos">10. Anexos</h2>
+<section id="parámetros-de-algoritmos" class="level3">
+<h3 class="anchored" data-anchor-id="parámetros-de-algoritmos">Parámetros de algoritmos</h3>
+<div id="bc10ddc2" class="cell" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="26">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Instancia</th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Repetición</th>
+<th data-quarto-table-cell-role="th">Parámetros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>TSP_10</td>
+<td>Fuerza bruta exacta</td>
+<td>1</td>
+<td>{'inicio_fijo': 0}</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>TSP_10</td>
+<td>Greedy vecino más cercano</td>
+<td>1</td>
+<td>{'inicio': 0}</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>TSP_10</td>
+<td>Búsqueda local 2-opt</td>
+<td>1</td>
+<td>{'inicio': 'greedy', 'max_pasadas': 28}</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>TSP_10</td>
+<td>Or-opt / 3-opt simplificado</td>
+<td>1</td>
+<td>{'bloques': '1,2,3', 'max_pasadas': 14}</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>TSP_10</td>
+<td>ILS</td>
+<td>1</td>
+<td>{'iteraciones': 40, 'semilla': 3036}</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">80</th>
+<td>TSP_100</td>
+<td>VNS</td>
+<td>2</td>
+<td>{'iteraciones': 24, 'vecindarios': 'swap, inve...</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">81</th>
+<td>TSP_100</td>
+<td>VNS</td>
+<td>3</td>
+<td>{'iteraciones': 24, 'vecindarios': 'swap, inve...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">82</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>1</td>
+<td>{'generaciones': 45, 'poblacion': 42, 'mutacio...</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">83</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>2</td>
+<td>{'generaciones': 45, 'poblacion': 42, 'mutacio...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">84</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>3</td>
+<td>{'generaciones': 45, 'poblacion': 42, 'mutacio...</td>
+</tr>
+</tbody>
+</table>
+
+<p>85 rows × 4 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="rutas-completas-encontradas" class="level3">
+<h3 class="anchored" data-anchor-id="rutas-completas-encontradas">Rutas completas encontradas</h3>
+</section>
+<section id="validaciones-completas" class="level3">
+<h3 class="anchored" data-anchor-id="validaciones-completas">Validaciones completas</h3>
+<div id="7c49305c" class="cell" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Instancia</th>
+<th data-quarto-table-cell-role="th">Algoritmo</th>
+<th data-quarto-table-cell-role="th">Repetición</th>
+<th data-quarto-table-cell-role="th">empieza_y_termina_misma_ciudad</th>
+<th data-quarto-table-cell-role="th">visita_todas_las_ciudades</th>
+<th data-quarto-table-cell-role="th">sin_repetir_ciudades_intermedias</th>
+<th data-quarto-table-cell-role="th">largo_n_mas_1</th>
+<th data-quarto-table-cell-role="th">ciudades_en_rango</th>
+<th data-quarto-table-cell-role="th">ruta_valida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>TSP_10</td>
+<td>Fuerza bruta exacta</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>TSP_10</td>
+<td>Greedy vecino más cercano</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>TSP_10</td>
+<td>Búsqueda local 2-opt</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>TSP_10</td>
+<td>Or-opt / 3-opt simplificado</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>TSP_10</td>
+<td>ILS</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">80</th>
+<td>TSP_100</td>
+<td>VNS</td>
+<td>2</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">81</th>
+<td>TSP_100</td>
+<td>VNS</td>
+<td>3</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">82</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>1</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">83</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>2</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">84</th>
+<td>TSP_100</td>
+<td>Algoritmo Genético</td>
+<td>3</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+
+<p>85 rows × 9 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="archivos-visuales-de-rutas" class="level3">
+<h3 class="anchored" data-anchor-id="archivos-visuales-de-rutas">Archivos visuales de rutas</h3>
+<p>Los GIFs de rutas ganadoras se muestran en la sección 7 para evitar repetir la misma visualización en anexos. Los PNG estáticos de mejores rutas permanecen guardados en <code>graficos/</code> como respaldo, pero no se insertan en el informe porque duplican la información principal de las animaciones.</p>
+</section>
+<section id="archivos-usados-e-instrucciones-de-reproducción" class="level3">
+<h3 class="anchored" data-anchor-id="archivos-usados-e-instrucciones-de-reproducción">Archivos usados e instrucciones de reproducción</h3>
+<p>El informe usa datos desde <code>resultados/resultados_tsp.csv</code>, <code>resultados/resultados_tsp_detalle.csv</code>, <code>tablas/mejores_por_instancia.csv</code>, <code>tablas/parametros_algoritmos.csv</code>, <code>tablas/validaciones_rutas.csv</code> y la carpeta <code>graficos/</code>.</p>
+<p>Para renderizar:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render informe_tsp_quarto.qmd</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para instalar dependencias:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">11. Referencias</h2>
+<p>Clase 3: Computación Evolutiva. (s. f.). <em>Material de clase de Computación Evolutiva</em>.</p>
+<p>Eiben, A. E., &amp; Smith, J. E. (2015). <em>Introduction to evolutionary computing</em> (2nd ed.). Springer.</p>
+<p>Metaheurísticas I. (s. f.). <em>Material de clase de Computación Evolutiva</em>.</p>
+<p>Metaheurísticas II. (s. f.). <em>Material de clase de Computación Evolutiva</em>.</p>
+<p>Pop, P. C., Cosma, O., Sabo, C., &amp; Pop Sitar, C. (2024). A comprehensive survey on the generalized traveling salesman problem. <em>European Journal of Operational Research</em>, 314(3), 819-835.</p>
+<p>Wang, Y., &amp; Han, Z. (2021). Ant colony optimization for traveling salesman problem based on parameters optimization. <em>Applied Soft Computing</em>, 107, 107439.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="informe_tsp_quarto_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
